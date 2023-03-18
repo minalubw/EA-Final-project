@@ -31,12 +31,8 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
-
     @Column(name = "[type]")
-<<<<<<< Updated upstream
-    TransactionType type;
-=======
     private TransactionType type;
->>>>>>> Stashed changes
+
 }
 
