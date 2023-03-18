@@ -33,6 +33,10 @@ public class Transaction {
     private Location location;
 
     @Column(name = "[type]")
+<<<<<<< Updated upstream
     TransactionType type;
+=======
+    private TransactionType type;
+>>>>>>> Stashed changes
 }
 
