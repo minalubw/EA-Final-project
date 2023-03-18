@@ -21,8 +21,7 @@ public class Member {
     private String firstName;
     private String lastName;
     private String email;
-
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Roles> roles;
+    private List<Role> roles;
 
 }

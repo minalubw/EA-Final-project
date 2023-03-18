@@ -7,18 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Roles {
+public class Role {
     @Id
     @GeneratedValue
     private int id;
-
-    private String roleType;
-
+    private RoleType roleType;
     @ManyToMany(mappedBy = "roles")
     private List<Member> member;
 }
