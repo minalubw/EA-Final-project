@@ -1,4 +1,4 @@
-package edu.miu.badge.enums;
+package edu.miu.badge.enumeration;
 
 /**
  *

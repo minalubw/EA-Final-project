@@ -1,7 +1,7 @@
 package edu.miu.badge.dto;
 
 import edu.miu.badge.domains.TimeSlot;
-import edu.miu.badge.enums.LocationType;
+import edu.miu.badge.enumeration.LocationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;

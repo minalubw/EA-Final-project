@@ -45,5 +45,13 @@ public class PlanController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/{planid}/locations")
+    public ResponseEntity<?> getAllLocationsForPlan(@PathVariable("planid") Integer id){
+        try {
+            return new ResponseEntity<>(planService.getLocationsForPlan(id), HttpStatus.OK);
+        }catch (PlanNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

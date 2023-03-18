@@ -1,8 +1,5 @@
 package edu.miu.badge.domains;
 
-
-
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,8 +18,7 @@ public class Member {
     private String firstName;
     private String lastName;
     private String email;
-
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Roles> roles;
+    private List<Role> roles;
 
 }
