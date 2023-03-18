@@ -14,7 +14,6 @@ import java.time.LocalDate;
 public class Membership {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="[membership_id]")
     private int id;
     @Column(name="[start_date]", nullable = false)
     private LocalDate startDate;
