@@ -1,6 +1,6 @@
 package edu.miu.badge.domains;
 
-
+import edu.miu.badge.enumeration.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,17 +10,15 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+@AllArgsConstructor
+public class Roles {
     @Id
     @GeneratedValue
     private int id;
-    private String firstName;
-    private String lastName;
-    private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Roles> roles;
+    private String roleType;
 
+    @ManyToMany(mappedBy = "roles")
+    private List<Member> member;
 }
