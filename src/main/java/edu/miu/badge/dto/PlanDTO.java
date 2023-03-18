@@ -1,7 +1,8 @@
 package edu.miu.badge.dto;
 
+import edu.miu.badge.domains.Location;
 import edu.miu.badge.domains.PlanType;
-import jakarta.persistence.OneToMany;
+import edu.miu.badge.domains.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,18 +14,6 @@ public class PlanDTO {
     private String name;
     private String description;
     private List<PlanType> planTypes;
-
-    public PlanDTO(String name, String description, List<PlanType> planTypes) {
-        this.name = name;
-        this.description = description;
-        this.planTypes = planTypes;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
+    private List<Location> locations;
+    private List<Role> allowedRoles;
 }
