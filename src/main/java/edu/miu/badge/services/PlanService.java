@@ -1,6 +1,5 @@
 package edu.miu.badge.services;
 
-import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.PlanDTO;
 
 import java.util.List;
