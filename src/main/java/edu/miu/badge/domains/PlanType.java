@@ -7,26 +7,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Setter @Getter
+@Data
 @NoArgsConstructor
-@ToString
+
 public class PlanType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private PlanTypeEnum planType;
-
-    public PlanType(PlanTypeEnum planType) {
-        this.planType = planType;
-    }
-
     public enum PlanTypeEnum{
         LIMITED, UNLIMITED, CHECKER;
     }

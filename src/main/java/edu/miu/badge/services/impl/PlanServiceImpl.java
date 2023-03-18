@@ -1,6 +1,8 @@
 package edu.miu.badge.services.impl;
 
+import edu.miu.badge.domains.Location;
 import edu.miu.badge.domains.Plan;
+import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.PlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.repositories.PlanRepository;
@@ -39,6 +41,8 @@ public class PlanServiceImpl implements PlanService {
             Plan toBeUpdated = planOptional.get();
             toBeUpdated.setName(planDTO.getName());
             toBeUpdated.setDescription(planDTO.getDescription());
+            toBeUpdated.setLocations(planDTO.getLocations());
+            toBeUpdated.setAllowedRoles(planDTO.getAllowedRoles());
             toBeUpdated.setPlanTypes(planDTO.getPlanTypes());
             return modelMapper.map(planRepository.save(toBeUpdated), PlanDTO.class);
         }
@@ -66,5 +70,19 @@ public class PlanServiceImpl implements PlanService {
             planDTOS.add(modelMapper.map(p, PlanDTO.class));
         }
         return planDTOS;
+    }
+
+    @Override
+    public List<LocationDTO> getLocationsForPlan(Integer id) {
+        List<LocationDTO> locationDTOS = new ArrayList<>();
+        Optional<Plan> planOptional = planRepository.findById(id);
+        if(planOptional.isPresent()){
+            for (Location l: planOptional.get().getLocations()) {
+                locationDTOS.add(modelMapper.map(l, LocationDTO.class));
+            }
+            return locationDTOS;
+        }else {
+            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+        }
     }
 }
