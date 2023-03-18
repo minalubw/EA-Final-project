@@ -27,7 +27,7 @@ public class locationDTO {
     private int capacity;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Integer> timeSlotIds;
+    private List<TimeSlot> timeSlotss;
     
     private LocationType locationType;
 }
