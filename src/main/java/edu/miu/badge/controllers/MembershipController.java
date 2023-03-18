@@ -1,10 +1,13 @@
 package edu.miu.badge.controllers;
 
+import edu.miu.badge.domains.Membership;
 import edu.miu.badge.services.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 public class MembershipController {
@@ -13,8 +16,8 @@ public class MembershipController {
 
     @GetMapping("/memberships/{membershipId}")
     public ResponseEntity<?> getOneMembershipById(@PathVariable int membershipId){
-        Membership memberShip =  membershipService.getOneMembershipById(membershipId);
-        return new ResponseEntity<Membership>(memberShip, HttpStatus.OK);
+        Membership membership =  membershipService.getOneMembershipById(membershipId);
+        return new ResponseEntity<Membership>(membership, HttpStatus.OK);
     }
     @GetMapping("/memberships")
     public ResponseEntity<?> getAll(@PathVariable int membershipId){
