@@ -6,11 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BadgeMembershipSystemApplication implements CommandLineRunner {
+public class Application implements CommandLineRunner {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(BadgeMembershipSystemApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 	@Override

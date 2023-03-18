@@ -1,4 +1,4 @@
-package edu.miu.badge.domain;
+package edu.miu.badge.domains;
 
 
 import jakarta.persistence.Entity;
