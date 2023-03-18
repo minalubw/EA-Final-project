@@ -2,6 +2,7 @@ package edu.miu.badge.domains;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor @ToString
 public class TimeSlot {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationId;
     
     private LocalDateTime startTime;

@@ -7,10 +7,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Setter @Getter
 @NoArgsConstructor
+@ToString
 public class PlanType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
