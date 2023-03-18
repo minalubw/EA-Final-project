@@ -1,5 +1,6 @@
 package edu.miu.badge.services;
 
+import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.PlanDTO;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface PlanService  {
     PlanDTO updatePlan(Integer id, PlanDTO planDTO);
     String deletePlan(Integer id);
     List<PlanDTO> getAllPlans();
+    List<LocationDTO> getLocationsForPlan(Integer id);
 }
