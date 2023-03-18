@@ -1,11 +1,10 @@
 package edu.miu.badge.domains;
 
+import edu.miu.badge.enumeration.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -34,9 +33,6 @@ public class Transaction {
     private Location location;
 
     @Column(name = "[type]")
-    private TransactionType transactionType;
+    TransactionType type;
 }
 
-enum TransactionType {
-    ALLOWED, DENIED
-}
