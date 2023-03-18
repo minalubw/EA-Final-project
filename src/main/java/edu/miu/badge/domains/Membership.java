@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Membership {
+public class MemberShip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="[membership_id]")
