@@ -3,6 +3,7 @@ package edu.miu.badge.services.impl;
 import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Member;
 import edu.miu.badge.dto.BadgeDTO;
+import edu.miu.badge.enumeration.BadgeStatus;
 import edu.miu.badge.exceptions.BadgeNotFoundException;
 import edu.miu.badge.repositories.BadgeRepository;
 import edu.miu.badge.services.BadgeService;
@@ -42,7 +43,7 @@ public class BadgeServiceImpl implements BadgeService {
         Badge badgeToUpdate = badgeRepository.findById(id).orElse(null);
         if (badgeToUpdate == null)
             throw new BadgeNotFoundException("Badge with ID " + id + " not found");
-        badgeToUpdate.setActive(badge.isActive());
+        badgeToUpdate.setBadgeStatus(badge.getBadgeStatus());
         badgeToUpdate.setMember(badge.getMember());
         return modelMapper.map(badgeRepository.save(badgeToUpdate), BadgeDTO.class);
     }
@@ -52,7 +53,9 @@ public class BadgeServiceImpl implements BadgeService {
         Badge toInactve = badgeRepository.findById(id).orElse(null);
         if (toInactve == null)
             throw new BadgeNotFoundException("Badge with ID " + id + " not found");
-        toInactve.setActive(false);
+        if(toInactve.getBadgeStatus().equals(BadgeStatus.INACTIVE))
+            throw new BadgeNotFoundException("Badge with ID " + id + " is already inactive");
+        toInactve.setBadgeStatus(BadgeStatus.INACTIVE);
         badgeRepository.save(toInactve);
         return "Badge with ID " +  id+ " deactivated";
     }
