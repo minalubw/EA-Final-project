@@ -1,7 +1,7 @@
 package edu.miu.badge.controllers;
 
 import edu.miu.badge.dto.MembershipDTO;
-import edu.miu.badge.exceptions.MembershipNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class MembershipController {
     public ResponseEntity<?> update(@PathVariable int membershipId, @RequestBody MembershipDTO membershipDTO){
         try {
             return new ResponseEntity<>(membershipService.update(membershipId, membershipDTO), HttpStatus.OK);
-        }catch (MembershipNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -39,7 +39,7 @@ public class MembershipController {
     public ResponseEntity<?> delete(@PathVariable int membershipId){
         try {
             return new ResponseEntity<>(membershipService.delete(membershipId), HttpStatus.OK);
-        }catch (MembershipNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }

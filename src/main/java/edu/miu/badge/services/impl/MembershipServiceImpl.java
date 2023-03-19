@@ -2,7 +2,7 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Membership;
 import edu.miu.badge.dto.MembershipDTO;
-import edu.miu.badge.exceptions.MembershipNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MembershipRepository;
 import edu.miu.badge.services.MembershipService;
 import jakarta.transaction.Transactional;
@@ -25,7 +25,7 @@ public class MembershipServiceImpl implements MembershipService {
 
     public MembershipDTO getMembershipById(int membershipId){
         Membership membership = membershipRepository.findById(membershipId).orElse(null);
-        if(membership == null) throw new MembershipNotFoundException("Membership with an id " + membershipId + " not found");
+        if(membership == null) throw new ResourceNotFoundException("Membership with an id " + membershipId + " not found");
         return modelMapper.map(membership, MembershipDTO.class);
     }
     public List<MembershipDTO> getAll(){
@@ -51,7 +51,7 @@ public class MembershipServiceImpl implements MembershipService {
             return modelMapper.map(membershipRepository.save(toBeUpdated), MembershipDTO.class);
         }
         else{
-            throw new MembershipNotFoundException("Membership with an id " + membershipDTO + " doesn't exist");
+            throw new ResourceNotFoundException("Membership with an id " + membershipDTO + " doesn't exist");
         }
     }
     public String delete(int membershipId){
@@ -61,7 +61,7 @@ public class MembershipServiceImpl implements MembershipService {
             return "Membership with id " + membershipId + " deleted!";
         }
         else{
-            throw new MembershipNotFoundException("Membership with an id " + membershipId + " doesn't exist");
+            throw new ResourceNotFoundException("Membership with an id " + membershipId + " doesn't exist");
         }
     }
 

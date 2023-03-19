@@ -1,15 +1,14 @@
 package edu.miu.badge.exceptions;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MembershipNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException{
     private String message;
 
-    public MembershipNotFoundException(String message){
+    public ResourceNotFoundException(String message){
         this.message = message;
     }
 }
