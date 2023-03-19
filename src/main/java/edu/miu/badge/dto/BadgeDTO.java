@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 public class BadgeDTO implements Serializable {
+
     private  int id;
     private BadgeStatus badgeStatus;
     private  Member member;
