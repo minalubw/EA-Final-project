@@ -64,5 +64,13 @@ public class MembershipServiceImpl implements MembershipService {
             throw new ResourceNotFoundException("Membership with an id " + membershipId + " doesn't exist");
         }
     }
+    public List<MembershipDTO> getMembershipsByMemberId(int memberId){
+        List<Membership> memberships = membershipRepository.findMembershipsByMemberId(memberId);
+        List<MembershipDTO> membershipDTOS = new ArrayList<MembershipDTO>();
+        for (Membership p: memberships) {
+            membershipDTOS.add(modelMapper.map(p, MembershipDTO.class));
+        }
+        return membershipDTOS;
+    }
 
 }
