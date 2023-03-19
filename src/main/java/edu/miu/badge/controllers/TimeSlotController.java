@@ -41,7 +41,7 @@ public class TimeSlotController {
     @GetMapping("/test")// this is just for testing...
     public String testt(){
         timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
-        return "time slot added for test";
+        return "location added for test";
     }
     @PutMapping("/{id}")
     public TimeSlot update(@PathVariable Long id, @RequestBody TimeSlotDTO timeSlotDTO){
