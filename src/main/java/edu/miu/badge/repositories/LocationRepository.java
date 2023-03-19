@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author Daniel Tsegay Meresie
  */
-public interface LocationRepository extends JpaRepository<Location, Integer>{
+public interface LocationRepository extends JpaRepository<Location, Long>{
     
 }

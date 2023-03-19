@@ -29,7 +29,7 @@ import lombok.ToString;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int locationId;
+    private Long locationId;
     private String locationName;
     private String description;
     private int capacity;
