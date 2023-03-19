@@ -18,8 +18,8 @@ public class Role {
     private int id;
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
-//    @ManyToMany(mappedBy = "roles")
-//    private List<Member> member;    //
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private List<Member> member;
 
 
 }

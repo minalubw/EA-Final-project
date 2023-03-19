@@ -17,7 +17,7 @@ public class Badge {
     @Column(name = "[is_active]")
     @Enumerated(EnumType.STRING)
     BadgeStatus badgeStatus;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "[member_id]")
     Member member;
 

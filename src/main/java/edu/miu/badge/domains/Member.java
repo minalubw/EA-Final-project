@@ -21,7 +21,6 @@ public class Member {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Role> roles;
     @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
-    @JoinTable(name = "member_badges")
     private List<Badge> badges;
 
 
