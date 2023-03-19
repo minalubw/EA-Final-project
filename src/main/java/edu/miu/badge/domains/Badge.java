@@ -1,6 +1,7 @@
 package edu.miu.badge.domains;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.miu.badge.enumeration.BadgeStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +18,8 @@ public class Badge {
     @Column(name = "[is_active]")
     @Enumerated(EnumType.STRING)
     BadgeStatus badgeStatus;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     @JoinColumn(name = "[member_id]")
     Member member;
 
