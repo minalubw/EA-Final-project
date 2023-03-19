@@ -14,4 +14,15 @@ public class MemberDTO {
     private final String lastName;
     private final String email;
     private final List<Role> roles;
+
+    @Override
+    public String toString() {
+        return "MemberDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

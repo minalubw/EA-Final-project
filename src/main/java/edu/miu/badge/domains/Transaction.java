@@ -32,6 +32,7 @@ public class Transaction {
     @JoinColumn(name = "location_id")
     private Location location;
     @Column(name = "[type]")
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
 
 }

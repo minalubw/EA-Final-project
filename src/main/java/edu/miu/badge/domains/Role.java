@@ -11,11 +11,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "roles")
 public class Role {
     @Id
     @GeneratedValue
     private int id;
+    @Enumerated(EnumType.STRING)
     private RoleType roleType;
-    @ManyToMany(mappedBy = "roles")
-    private List<Member> member;
+//    @ManyToMany(mappedBy = "roles")
+//    private List<Member> member;    //
+
+
 }
