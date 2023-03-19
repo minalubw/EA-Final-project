@@ -3,6 +3,7 @@ package edu.miu.badge.controllers;
 import edu.miu.badge.domains.HttpResponse;
 import edu.miu.badge.dto.MemberDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,19 @@ public class MemberController {
             return new ResponseEntity<String>(memberService.deleteMemberById(id), HttpStatus.OK);
         }catch (MemberNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping
+    public ResponseEntity<?> getAllMembers(){
+        return new ResponseEntity<>(memberService.getAllMembers(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{memberid}")
+    public ResponseEntity<?> updateMember(@PathVariable("memberid") int id, @RequestBody MemberDTO memberDTO){
+        try {
+            return new ResponseEntity<>(memberService.updateMember(id, memberDTO), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }
