@@ -1,7 +1,6 @@
 package edu.miu.badge.controllers;
 
 import edu.miu.badge.domains.HttpResponse;
-import edu.miu.badge.domains.Member;
 import edu.miu.badge.dto.MemberDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.services.MemberService;
@@ -17,8 +16,8 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<HttpResponse> createMember(@RequestBody Member member){
-        memberService.insertNewMember(member);
+    public ResponseEntity<HttpResponse> createMember(@RequestBody MemberDTO memberDTO){
+        memberService.insertNewMember(memberDTO);
         return responseResponseEntity(HttpStatus.OK, "New member added Successfully!");
     }
 
