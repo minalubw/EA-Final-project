@@ -1,40 +1,47 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.domains.Membership;
+import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 
 @RestController
+@RequestMapping("/memberships")
 public class MembershipController {
     @Autowired
     private MembershipService membershipService;
 
-    @GetMapping("/memberships/{membershipId}")
-    public ResponseEntity<?> getOneMembershipById(@PathVariable int membershipId){
-        Membership membership =  membershipService.getOneMembershipById(membershipId);
-        return new ResponseEntity<Membership>(membership, HttpStatus.OK);
+    @GetMapping("")
+    public ResponseEntity<?> getAll(){
+        return new ResponseEntity<>(membershipService.getAll(), HttpStatus.OK);
     }
-    @GetMapping("/memberships")
-    public ResponseEntity<?> getAll(@PathVariable int membershipId){
-        Collection<Membership> memberships =  membershipService.getAll();
-        return new ResponseEntity<Collection<Membership>>(memberships, HttpStatus.OK);
+    @GetMapping("/{membershipId}")
+    public ResponseEntity<?> getMembershipById(@PathVariable int membershipId){
+        return new ResponseEntity<>(membershipService.getMembershipById(membershipId), HttpStatus.OK);
     }
-
-    @PostMapping("/memberships")
-    public ResponseEntity<?> create(@RequestBody Membership membership){
-        Membership membership1 =  membershipService.create(membership);
-        return new ResponseEntity<Membership>(membership1, HttpStatus.OK);
+    @PostMapping("")
+    public ResponseEntity<?> create(@RequestBody MembershipDTO membershipDTO){
+        return new ResponseEntity<>(membershipService.create(membershipDTO), HttpStatus.OK);
     }
-
-    @PutMapping("/memberships/{membershipId}")
-    public ResponseEntity<?> update(@PathVariable int membershipId, @RequestBody Membership membership){
-        Membership membership1 =  membershipService.update(membership);
-        return new ResponseEntity<Membership>(membership1, HttpStatus.OK);
+    @PutMapping("/{membershipId}")
+    public ResponseEntity<?> update(@PathVariable int membershipId, @RequestBody MembershipDTO membershipDTO){
+        try {
+            return new ResponseEntity<>(membershipService.update(membershipId, membershipDTO), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @DeleteMapping("/{membershipId}")
+    public ResponseEntity<?> delete(@PathVariable int membershipId){
+        try {
+            return new ResponseEntity<>(membershipService.delete(membershipId), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }
