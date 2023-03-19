@@ -20,5 +20,5 @@ public class LocationDTO {
     private String description;
     private int capacity;
     private LocationType locationType;
-    //private List<TimeSlot> timeslots;
+    private List<TimeSlot> timeslots;
 }

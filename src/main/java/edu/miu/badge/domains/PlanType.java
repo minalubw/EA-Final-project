@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-
 public class PlanType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

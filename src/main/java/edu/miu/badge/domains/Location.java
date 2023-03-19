@@ -30,11 +30,9 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationId;
-    
     private String locationName;
     private String description;
     private int capacity;
-    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TimeSlot> timeSlots;
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,6 @@
 package edu.miu.badge.dto;
 
-import edu.miu.badge.domains.Roles;
+import edu.miu.badge.domains.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,5 +13,5 @@ public class MemberDTO {
     private final String firstName;
     private final String lastName;
     private final String email;
-    private final List<Roles> roles;
+    private final List<Role> roles;
 }
