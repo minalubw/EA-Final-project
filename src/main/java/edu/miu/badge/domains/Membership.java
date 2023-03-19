@@ -20,6 +20,9 @@ public class Membership {
     @Column(name="[end_date]", nullable = false)
     private LocalDate endDate;
     @ManyToOne
+    @JoinColumn(name="[member_id]", nullable = false)
+    private Member member;
+    @ManyToOne
     @JoinColumn(name="[plan_id]", nullable = false)
     private Plan plan;
     @ManyToOne
