@@ -1,13 +1,15 @@
 package edu.miu.badge.services;
 
 import edu.miu.badge.domains.Transaction;
+import edu.miu.badge.dto.TransactionDTO;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface TransactionService {
-    Transaction createTransaction(Transaction transaction);
-    Transaction getTransaction(int id);
-    Transaction updateTransaction(int transactionId,Transaction transaction);
+    TransactionDTO createTransaction(TransactionDTO transaction);
+    TransactionDTO getTransaction(int id);
+    TransactionDTO updateTransaction(int transactionId,TransactionDTO transaction);
     String deleteTransaction(int id);
-    Collection<Transaction> getAllTransactions();
+    List<TransactionDTO> getAllTransactions();
 }

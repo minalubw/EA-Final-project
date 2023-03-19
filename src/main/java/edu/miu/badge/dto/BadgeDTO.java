@@ -17,18 +17,6 @@ import java.io.Serializable;
 public class BadgeDTO implements Serializable {
     private final int id;
     private final boolean isActive;
-    private final MemberDto member;
+    private final Member member;
 
-    /**
-     * A DTO for the {@link Member} entity
-     */
-    @AllArgsConstructor
-    @Getter
-    @ToString
-    public static class MemberDto implements Serializable {
-        private final int id;
-        private final String firstName;
-        private final String lastName;
-        private final String email;
-    }
 }
