@@ -45,7 +45,7 @@ public class BadgeServiceImpl implements BadgeService {
         if (badgeToUpdate == null)
             throw new BadgeNotFoundException("Badge with ID " + id + " not found");
         badgeToUpdate.setBadgeStatus(badge.getBadgeStatus());
-        badgeToUpdate.setMember(badge.getMember());
+        //badgeToUpdate.setMember(badge.getMember());
         return modelMapper.map(badgeRepository.save(badgeToUpdate), BadgeDTO.class);
     }
 

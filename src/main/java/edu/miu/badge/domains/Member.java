@@ -20,7 +20,8 @@ public class Member {
     private String email;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Role> roles;
-    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
 
 
