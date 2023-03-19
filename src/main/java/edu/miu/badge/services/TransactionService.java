@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface TransactionService {
     Transaction createTransaction(Transaction transaction);
     Transaction getTransaction(int id);
-    Transaction updateTransaction(Transaction transaction);
+    Transaction updateTransaction(int transactionId,Transaction transaction);
     String deleteTransaction(int id);
     Collection<Transaction> getAllTransactions();
 }

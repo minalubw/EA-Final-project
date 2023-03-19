@@ -1,6 +1,7 @@
 package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Badge;
+import edu.miu.badge.exceptions.BadgeNotFoundException;
 import edu.miu.badge.repositories.BadgeRepository;
 import edu.miu.badge.services.BadgeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +18,33 @@ public class BadgeServiceImpl implements BadgeService {
 
 
     @Override
-    public Badge getBadge(int id) {
-        return badgeRepository.findById(id).get();
+    public Badge getBadge(int id)throws BadgeNotFoundException {
+        Badge badge = badgeRepository.findById(id).orElse(null);
+        if (badge == null)
+            throw new BadgeNotFoundException("Badge with ID " + id + " not found");
+        return badge;
     }
 
     @Override
-    public Badge addBadge(Badge badge) {                            //exception handling
+    public Badge createBadge(Badge badge) {                            //exception handling
         return badgeRepository.save(badge);
     }
 
     @Override
-    public Badge updateBadge(int id,Badge badge) {
-        Badge badgeToUpdate = badgeRepository.findById(id).get();
+    public Badge updateBadge(int id,Badge badge) throws BadgeNotFoundException{
+        Badge badgeToUpdate = badgeRepository.findById(id).orElse(null);
+        if (badgeToUpdate == null)
+            throw new BadgeNotFoundException("Badge with ID " + id + " not found");
         badgeToUpdate.setActive(badge.isActive());
         badgeToUpdate.setMember(badge.getMember());
         return badgeRepository.save(badgeToUpdate);
     }
 
     @Override
-    public String inactiveBadge(int id) {
-        Badge toInactve = badgeRepository.findById(id).get();
+    public String inactiveBadge(int id)throws BadgeNotFoundException {
+        Badge toInactve = badgeRepository.findById(id).orElse(null);
+        if (toInactve == null)
+            throw new BadgeNotFoundException("Badge with ID " + id + " not found");
         toInactve.setActive(false);
         return "Badge with ID " +  id+ " deactivated";
     }

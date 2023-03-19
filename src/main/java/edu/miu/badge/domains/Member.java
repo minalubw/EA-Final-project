@@ -1,8 +1,5 @@
 package edu.miu.badge.domains;
 
-
-
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
