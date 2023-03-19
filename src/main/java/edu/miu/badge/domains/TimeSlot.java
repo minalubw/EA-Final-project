@@ -22,7 +22,7 @@ import lombok.ToString;
 public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int locationId;
+    private Long timeSlotId;
     
     private LocalDateTime startTime;
     private LocalDateTime endTime;
