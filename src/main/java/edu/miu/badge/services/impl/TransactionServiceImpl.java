@@ -1,36 +1,42 @@
 package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Transaction;
+import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.TransactionNotFoundException;
 import edu.miu.badge.repositories.TransactionRepository;
 import edu.miu.badge.services.TransactionService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     TransactionRepository transactionRepository;
-
+    @Autowired
+    ModelMapper modelMapper;
     @Override
-    public Transaction createTransaction(Transaction transaction) {
-        return transactionRepository.save(transaction);
+    public TransactionDTO createTransaction(TransactionDTO transaction) {
+        Transaction convertedTransaction = modelMapper.map(transaction, Transaction.class);
+        return modelMapper.map(transactionRepository.save(convertedTransaction), TransactionDTO.class);
     }
 
     @Override
-    public Transaction getTransaction(int id)throws TransactionNotFoundException {
+    public TransactionDTO getTransaction(int id)throws TransactionNotFoundException {
         Transaction transaction = transactionRepository.findById(id).orElse(null);
         if(transaction == null){
             throw new TransactionNotFoundException("Transaction with ID " + id + " not found");
         }
-        return transaction;
+        return modelMapper.map(transaction, TransactionDTO.class);
     }
 
     @Override
-    public Transaction updateTransaction(int transactionId,Transaction transaction)throws TransactionNotFoundException {
+    public TransactionDTO updateTransaction(int transactionId,TransactionDTO transaction)throws TransactionNotFoundException {
         Transaction transactionToBeUpdated = transactionRepository.findById(transactionId).orElse(null);
         if (transactionToBeUpdated == null){
             throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found");
@@ -40,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionToBeUpdated.setMembership(transaction.getMembership());
         transactionToBeUpdated.setLocation(transaction.getLocation());
         transactionToBeUpdated.setType(transaction.getType());
-        return transactionRepository.save(transactionToBeUpdated);
+        return modelMapper.map(transactionRepository.save(transactionToBeUpdated), TransactionDTO.class) ;
     }
 
     @Override
@@ -54,7 +60,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Collection<Transaction> getAllTransactions() {
-       return transactionRepository.findAll();
+    public List<TransactionDTO> getAllTransactions() {
+        List<Transaction> transactions = transactionRepository.findAll();
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+        for (Transaction transaction: transactions) {
+            transactionDTOS.add(modelMapper.map(transaction, TransactionDTO.class));
+        }
+        return transactionDTOS;
     }
 }

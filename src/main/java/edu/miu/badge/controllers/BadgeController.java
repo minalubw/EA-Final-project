@@ -1,12 +1,15 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.domains.Badge;
+
+import edu.miu.badge.dto.BadgeDTO;
 import edu.miu.badge.exceptions.BadgeNotFoundException;
 import edu.miu.badge.services.BadgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class BadgeController {
@@ -15,29 +18,29 @@ public class BadgeController {
 
     @GetMapping("/badges")
     public ResponseEntity<?> getBadges() {                                             // get all badges
-        return new ResponseEntity<String>(badgeService.getAllBadges().toString(), HttpStatus.OK);
+        return new ResponseEntity<List<BadgeDTO>>(badgeService.getAllBadges(), HttpStatus.OK);
     }
 
     @GetMapping("/badges/{id}")
     public ResponseEntity<?> getBadge(@PathVariable int id) {                          // get a badge by id
         try {
-            return new ResponseEntity<String>(badgeService.getBadge(id).toString(), HttpStatus.OK);
+            return new ResponseEntity<BadgeDTO>(badgeService.getBadge(id), HttpStatus.OK);
         } catch (BadgeNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/badges")
-    public ResponseEntity<?> addBadge(@RequestBody Badge badge) {                                    // add a badge
-        Badge newBadge = badgeService.createBadge(badge);
-        return new ResponseEntity<Badge>(newBadge, HttpStatus.OK);
+    public ResponseEntity<?> addBadge(@RequestBody BadgeDTO badge) {                                    // add a badge
+        BadgeDTO newBadge = badgeService.createBadge(badge);
+        return new ResponseEntity<BadgeDTO>(newBadge, HttpStatus.OK);
     }
 
     @PutMapping("/badges/{id}")
-    public ResponseEntity<?> updateBadge(@PathVariable int id, @RequestBody Badge badge) {           // update a badge
+    public ResponseEntity<?> updateBadge(@PathVariable int id, @RequestBody BadgeDTO badge) {           // update a badge
         try {
-            Badge updatedBadge = badgeService.updateBadge(id, badge);
-            return new ResponseEntity<Badge>(updatedBadge, HttpStatus.OK);
+            BadgeDTO updatedBadge = badgeService.updateBadge(id, badge);
+            return new ResponseEntity<BadgeDTO>(updatedBadge, HttpStatus.OK);
         } catch (BadgeNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
