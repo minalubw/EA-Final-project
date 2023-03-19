@@ -18,7 +18,7 @@ public class Member {
     private String firstName;
     private String lastName;
     private String email;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Role> roles;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "[member_id]")
