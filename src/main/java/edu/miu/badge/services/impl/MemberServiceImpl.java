@@ -19,8 +19,8 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     ModelMapper modelMapper;
     @Override
-    public void insertNewMember(Member member) {
-        memberRepository.save(member);
+    public void insertNewMember(MemberDTO memberDTO) {
+        memberRepository.save(modelMapper.map(memberDTO, Member.class));
     }
 
     @Override
