@@ -68,5 +68,10 @@ public class MemberController {
             } catch (ResourceNotFoundException e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
-        }
+    }
+    @GetMapping("/{memberid}/plans")
+    public ResponseEntity<?> getPlansForMember(@PathVariable int memberid){
+        return new ResponseEntity<>(membershipService.getAllPlansForMember(memberid), HttpStatus.OK);
+    }
+
 }

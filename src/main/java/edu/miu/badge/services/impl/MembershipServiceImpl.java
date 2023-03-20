@@ -2,6 +2,7 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Membership;
 import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.PlanDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MembershipRepository;
 import edu.miu.badge.services.MembershipService;
@@ -13,16 +14,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class MembershipServiceImpl implements MembershipService {
     @Autowired
     MembershipRepository membershipRepository;
-
     @Autowired
     ModelMapper modelMapper;
-
     public MembershipDTO getMembershipById(int membershipId){
         Membership membership = membershipRepository.findById(membershipId).orElse(null);
         if(membership == null) throw new ResourceNotFoundException("Membership with an id " + membershipId + " not found");
@@ -71,6 +71,12 @@ public class MembershipServiceImpl implements MembershipService {
             membershipDTOS.add(modelMapper.map(p, MembershipDTO.class));
         }
         return membershipDTOS;
+    }
+
+    @Override
+    public List<PlanDTO> getAllPlansForMember(int id) {
+        return membershipRepository.findPlansByMemberId(id).stream()
+                .map(p -> modelMapper.map(p, PlanDTO.class)).collect(Collectors.toList());
     }
 
 }
