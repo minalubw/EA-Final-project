@@ -2,15 +2,16 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Member;
-import edu.miu.badge.domains.Membership;
+import edu.miu.badge.domains.Role;
 import edu.miu.badge.domains.Transaction;
-import edu.miu.badge.dto.BadgeDTO;
-import edu.miu.badge.dto.MemberDTO;
-import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.ResponseBadgeDTO;
+import edu.miu.badge.dto.RequestMemberDTO;
+import edu.miu.badge.dto.ResponseMemberDTO;
 import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
+import edu.miu.badge.repositories.RoleRepository;
 import edu.miu.badge.services.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,29 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private RoleRepository roleRepository;
     @Override
-    public MemberDTO insertNewMember(MemberDTO memberDTO) {
-        return modelMapper.map(memberRepository.save(modelMapper.map(memberDTO, Member.class)), MemberDTO.class);
+    public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO) {
+        List<Role> role = new ArrayList<>();
+        for(Integer roleId: requestMemberDTO.getRoles()){
+            Optional<Role> role1 = roleRepository.findById(roleId);
+            if(role1.isPresent()){
+                role.add(role1.get());
+            }else{
+                throw new ResourceNotFoundException("Role with id " + roleId + " not found");
+            }
+        }
+        Member member = modelMapper.map(requestMemberDTO, Member.class);
+        member.setRoles(role);
+        return modelMapper.map(memberRepository.save(member), ResponseMemberDTO.class);
     }
 
     @Override
-    public MemberDTO getMemberById(int id) {
+    public ResponseMemberDTO getMemberById(int id) {
         Optional<Member> member = memberRepository.findById(id);
         if(member.isPresent()){
-            return modelMapper.map(member.get(), MemberDTO.class);
+            return modelMapper.map(member.get(), ResponseMemberDTO.class);
         }
         throw new MemberNotFoundException("Member with id " + id + " not found");
     }
@@ -53,13 +67,13 @@ public class MemberServiceImpl implements MemberService {
         throw new MemberNotFoundException("Member with id " + id + " not found");
     }
     @Override
-    public List<BadgeDTO> getMemberBadges(int id) {
+    public List<ResponseBadgeDTO> getMemberBadges(int id) {
         List<Badge> badges = memberRepository.allBadgesOfMember(id);
-        List<BadgeDTO> badgeDTOs= new ArrayList<>();
+        List<ResponseBadgeDTO> responseBadgeDTOS = new ArrayList<>();
         for(Badge badge: badges){
-            badgeDTOs.add(modelMapper.map(badge, BadgeDTO.class));
+            responseBadgeDTOS.add(modelMapper.map(badge, ResponseBadgeDTO.class));
         }
-        return badgeDTOs;
+        return responseBadgeDTOS;
     }
 
     @Override
@@ -72,26 +86,24 @@ public class MemberServiceImpl implements MemberService {
         return transactionDTOs;
     }
     @Override
-    public MemberDTO updateMember(int id, MemberDTO memberDTO) {
+    public ResponseMemberDTO updateMember(int id, RequestMemberDTO requestMemberDTO) {
         Optional<Member> memberOptional = memberRepository.findById(id);
         if(memberOptional.isPresent()){
             Member toBeUpdated = memberOptional.get();
-            toBeUpdated.setFirstName(memberDTO.getFirstName());
-            toBeUpdated.setLastName(memberDTO.getLastName());
-            toBeUpdated.setEmail(memberDTO.getEmail());
-            toBeUpdated.setRoles(memberDTO.getRoles());
-            toBeUpdated.setBadges(memberDTO.getBadges());
-            toBeUpdated.setMemberships(memberDTO.getMemberships());
-            return modelMapper.map(memberRepository.save(toBeUpdated), MemberDTO.class);
+            toBeUpdated.setFirstName(requestMemberDTO.getFirstName());
+            toBeUpdated.setLastName(requestMemberDTO.getLastName());
+            toBeUpdated.setEmail(requestMemberDTO.getEmail());
+            return modelMapper.map(memberRepository.save(toBeUpdated), ResponseMemberDTO.class);
         }else {
             throw new ResourceNotFoundException("Member with id " + id + " doesn't exists");
         }
     }
     @Override
-    public List<MemberDTO> getAllMembers() {
+    public List<ResponseMemberDTO> getAllMembers() {
         return memberRepository.findAll().stream()
-                .map(member -> modelMapper.map(member, MemberDTO.class))
+                .map(member -> modelMapper.map(member, ResponseMemberDTO.class))
                 .collect(Collectors.toList());
     }
+
 
 }

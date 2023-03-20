@@ -1,11 +1,9 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.HttpResponse;
-import edu.miu.badge.domains.Transaction;
-import edu.miu.badge.dto.BadgeDTO;
-import edu.miu.badge.dto.MemberDTO;
-import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.ResponseBadgeDTO;
+import edu.miu.badge.dto.RequestMemberDTO;
+import edu.miu.badge.dto.ResponseMemberDTO;
 import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
@@ -27,8 +25,8 @@ public class MemberController {
     private MembershipService membershipService;
 
     @PostMapping
-    public ResponseEntity<HttpResponse> createMember(@RequestBody MemberDTO memberDTO){
-        memberService.insertNewMember(memberDTO);
+    public ResponseEntity<HttpResponse> createMember(@RequestBody RequestMemberDTO requestMemberDTO){
+        memberService.insertNewMember(requestMemberDTO);
         return responseResponseEntity(HttpStatus.OK, "New member added Successfully!");
     }
 
@@ -40,7 +38,7 @@ public class MemberController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getMemberById(@PathVariable int id){
         try {
-            return new ResponseEntity<MemberDTO>(memberService.getMemberById(id), HttpStatus.OK);
+            return new ResponseEntity<ResponseMemberDTO>(memberService.getMemberById(id), HttpStatus.OK);
         }catch (MemberNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -57,7 +55,7 @@ public class MemberController {
     @GetMapping("/{id}/badges")                                             // get all badges of a member
     public ResponseEntity<?> getMemberBadges(@PathVariable int id){
         try {
-            return new ResponseEntity<List<BadgeDTO>>(memberService.getMemberBadges(id), HttpStatus.OK);
+            return new ResponseEntity<List<ResponseBadgeDTO>>(memberService.getMemberBadges(id), HttpStatus.OK);
         }catch (MemberNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -86,9 +84,9 @@ public class MemberController {
     }
 
     @PutMapping("/{memberid}")
-    public ResponseEntity<?> updateMember(@PathVariable("memberid") int id, @RequestBody MemberDTO memberDTO){
+    public ResponseEntity<?> updateMember(@PathVariable("memberid") int id, @RequestBody RequestMemberDTO requestMemberDTO){
             try {
-                return new ResponseEntity<>(memberService.updateMember(id, memberDTO), HttpStatus.OK);
+                return new ResponseEntity<>(memberService.updateMember(id, requestMemberDTO), HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
