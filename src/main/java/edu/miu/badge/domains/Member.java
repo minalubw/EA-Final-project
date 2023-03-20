@@ -1,6 +1,5 @@
 package edu.miu.badge.domains;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,13 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String firstName;
     private String lastName;
     private String email;
+    @ManyToMany
+    private List<Role> roles;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "[member_id]")
+    private List<Badge> badges;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Roles> roles;
 
 }

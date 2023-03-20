@@ -1,6 +1,5 @@
 package edu.miu.badge.domains;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.miu.badge.enumeration.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,10 +16,8 @@ public class Roles {
     @Id
     @GeneratedValue
     private int id;
-
-    private String roleType;
-
-    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
     @ManyToMany(mappedBy = "roles")
     private List<Member> member;
 }
