@@ -5,9 +5,7 @@ import edu.miu.badge.domains.Member;
 import edu.miu.badge.domains.Membership;
 import edu.miu.badge.domains.Transaction;
 import edu.miu.badge.enumeration.TransactionType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,13 +14,13 @@ import java.time.LocalDateTime;
  * A DTO for the {@link Transaction} entity
  */
 @AllArgsConstructor
-@Getter
-@ToString
+@Data
+@NoArgsConstructor
 public class TransactionDTO implements Serializable {
-    private final int id;
-    private final LocalDateTime date;
-    private final Member member;
-    private final Membership membership;
-    private final Location location;
-    private final TransactionType type;
+    private  int id;
+    private  LocalDateTime date;
+    private  Member member;
+    private  Membership membership;
+    private  Location location;
+    private TransactionType type;
 }

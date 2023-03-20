@@ -9,9 +9,9 @@ import java.util.List;
  * @author Daniel Tsegay Meresie
  */
 public interface LocationService {
-    Location createLocation(LocationDTO locationDTO);
-    Location getLocationById(Long id);
-    Location updateLocation(Long id, LocationDTO locationDTO);
+    LocationDTO createLocation(LocationDTO locationDTO);
+    LocationDTO getLocationById(Long id);
+    LocationDTO updateLocation(Long id, LocationDTO locationDTO);
     void deleteLocation(Long id);
-    List<Location> getAllLocations();
+    List<LocationDTO> getAllLocations();
 }

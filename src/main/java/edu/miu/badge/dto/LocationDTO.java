@@ -16,6 +16,7 @@ import java.util.List;
 @Setter @Getter @AllArgsConstructor
 @NoArgsConstructor @ToString
 public class LocationDTO {
+    private Long locationId;
     private String locationName;
     private String description;
     private int capacity;

@@ -1,12 +1,12 @@
 package edu.miu.badge.domains;
 
 
+import edu.miu.badge.enumeration.PlanTypeEnum;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +20,5 @@ public class PlanType {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PlanTypeEnum planType;
-    public enum PlanTypeEnum{
-        LIMITED, UNLIMITED, CHECKER;
-    }
+
 }

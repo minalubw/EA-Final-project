@@ -14,13 +14,16 @@ import lombok.*;
 public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
+
+    @Column(name = "[badge_number]")
+    private int badgeNumber;
     @Column(name = "[is_active]")
     @Enumerated(EnumType.STRING)
-    BadgeStatus badgeStatus;
+    private BadgeStatus badgeStatus;
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinColumn(name = "[member_id]")
-    Member member;
+    private Member member;
 
 }
