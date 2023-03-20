@@ -2,6 +2,7 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Membership;
 import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.PlanDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MembershipRepository;
 import edu.miu.badge.services.MembershipService;

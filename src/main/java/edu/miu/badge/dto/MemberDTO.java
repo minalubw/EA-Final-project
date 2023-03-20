@@ -2,8 +2,6 @@ package edu.miu.badge.dto;
 
 import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Roles;
-import edu.miu.badge.domains.Membership;
-import edu.miu.badge.domains.Role;
 import lombok.*;
 
 import java.util.List;
