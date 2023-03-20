@@ -71,5 +71,5 @@ public class MemberServiceImpl implements MemberService {
         }
         return transactionDTOs;
     }
-    
+
 }

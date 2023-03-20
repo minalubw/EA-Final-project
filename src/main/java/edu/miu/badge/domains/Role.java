@@ -19,9 +19,5 @@ public class Role {
     private int id;
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
-    @ManyToMany(mappedBy = "roles")
-    @JsonIgnore
-    private List<Member> member;
-
 
 }
