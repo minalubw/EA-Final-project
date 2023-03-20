@@ -1,5 +1,6 @@
 package edu.miu.badge.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +26,10 @@ public class Member {
     @JsonManagedReference
     @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
+
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Membership> memberships;
 
 
 }

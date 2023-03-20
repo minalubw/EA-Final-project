@@ -1,6 +1,7 @@
 package edu.miu.badge.dto;
 
 import edu.miu.badge.domains.Badge;
+import edu.miu.badge.domains.Membership;
 import edu.miu.badge.domains.Roles;
 import lombok.*;
 
@@ -18,6 +19,8 @@ public class MemberDTO {
     private List<Roles> roles;
 
     private List<Badge> badges;
+
+    private List<Membership> memberships;
 
     @Override
     public String toString() {
