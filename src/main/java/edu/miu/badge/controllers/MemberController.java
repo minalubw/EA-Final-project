@@ -69,14 +69,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/{id}/memberships")                         // get all membership of a member
-    public ResponseEntity<?> allMembershipOfMember(@PathVariable int id){
-        try {
-            return new ResponseEntity<List<MembershipDTO>>(memberService.getAllMembershipOfMember(id), HttpStatus.OK);
-        }catch (MemberNotFoundException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
+
 
 
 

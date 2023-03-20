@@ -26,7 +26,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
         List<Transaction> allTransactionsOfMember(int memberId);
 
         //list of all membership of a member
-        @Query("select m from Membership m where m.member.id = ?1")
-        List<Membership> allMembershipsOfMember(int memberId);
+
 
 }

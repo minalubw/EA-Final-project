@@ -14,6 +14,5 @@ public interface MemberService {
      String deleteMemberById(int id);
      List<BadgeDTO> getMemberBadges(int id);
      List<TransactionDTO> getMemberTransactions(int id);
-    List<MembershipDTO> getAllMembershipOfMember(int memberId);
 
 }
