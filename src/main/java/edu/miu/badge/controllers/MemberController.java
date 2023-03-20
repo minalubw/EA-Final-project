@@ -25,14 +25,8 @@ public class MemberController {
     private MembershipService membershipService;
 
     @PostMapping
-    public ResponseEntity<HttpResponse> createMember(@RequestBody RequestMemberDTO requestMemberDTO){
-        memberService.insertNewMember(requestMemberDTO);
-        return responseResponseEntity(HttpStatus.OK, "New member added Successfully!");
-    }
-
-    private ResponseEntity<HttpResponse> responseResponseEntity(HttpStatus httpStatus, String message){
-        HttpResponse httpResponse = new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),  message);
-        return new ResponseEntity<>(httpResponse, httpStatus);
+    public ResponseEntity<ResponseMemberDTO> createMember(@RequestBody RequestMemberDTO requestMemberDTO){
+        return new ResponseEntity<ResponseMemberDTO>(memberService.insertNewMember(requestMemberDTO), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -83,8 +77,8 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getAllMembers(), HttpStatus.OK);
     }
 
-    @PutMapping("/{memberid}")
-    public ResponseEntity<?> updateMember(@PathVariable("memberid") int id, @RequestBody RequestMemberDTO requestMemberDTO){
+    @PutMapping("/{member_id}")
+    public ResponseEntity<?> updateMember(@PathVariable("member_id") int id, @RequestBody RequestMemberDTO requestMemberDTO){
             try {
                 return new ResponseEntity<>(memberService.updateMember(id, requestMemberDTO), HttpStatus.OK);
             } catch (ResourceNotFoundException e) {
