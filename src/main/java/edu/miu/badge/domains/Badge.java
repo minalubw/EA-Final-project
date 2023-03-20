@@ -1,6 +1,7 @@
 package edu.miu.badge.domains;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.miu.badge.enumeration.BadgeStatus;
 import jakarta.persistence.*;
@@ -8,7 +9,8 @@ import lombok.*;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Badge {
@@ -19,7 +21,7 @@ public class Badge {
     @Enumerated(EnumType.STRING)
     BadgeStatus badgeStatus;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonBackReference
     @JoinColumn(name = "[member_id]")
     Member member;
 

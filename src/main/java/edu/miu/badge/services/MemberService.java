@@ -1,7 +1,10 @@
 package edu.miu.badge.services;
 
 import edu.miu.badge.domains.Member;
+import edu.miu.badge.dto.MemberDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 public interface MemberService {
     public MemberDTO insertNewMember(MemberDTO memberDTO);

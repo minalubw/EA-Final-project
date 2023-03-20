@@ -1,14 +1,14 @@
 package edu.miu.badge.domains;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
@@ -19,8 +19,10 @@ public class Member {
     private String lastName;
     private String email;
     @ManyToMany
-    private List<Role> roles;
+    @JsonManagedReference
+    private List<Roles> roles;
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
 
