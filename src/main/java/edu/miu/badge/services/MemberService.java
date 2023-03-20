@@ -12,5 +12,7 @@ public interface MemberService {
     public String deleteMemberById(int id);
     List<MemberDTO> getAllMembers();
     MemberDTO updateMember(int id, MemberDTO memberDTO);
+    List<BadgeDTO> getMemberBadges(int id);
+    List<TransactionDTO> getMemberTransactions(int id);
 
 }

@@ -7,12 +7,14 @@ import edu.miu.badge.services.TimeSlotService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Daniel Tsegay Meresie
  */
 @Service
+@Transactional
 public class TimeSlotServiceImpl implements TimeSlotService{
     @Autowired
     TimeSlotRepository timeSlotRepository;

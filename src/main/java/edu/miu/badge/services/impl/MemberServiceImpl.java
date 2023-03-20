@@ -1,7 +1,13 @@
 package edu.miu.badge.services.impl;
 
+import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Member;
+import edu.miu.badge.domains.Membership;
+import edu.miu.badge.domains.Transaction;
+import edu.miu.badge.dto.BadgeDTO;
 import edu.miu.badge.dto.MemberDTO;
+import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
@@ -10,7 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,6 +53,25 @@ public class MemberServiceImpl implements MemberService {
         throw new MemberNotFoundException("Member with id " + id + " not found");
     }
     @Override
+    public List<BadgeDTO> getMemberBadges(int id) {
+        List<Badge> badges = memberRepository.allBadgesOfMember(id);
+        List<BadgeDTO> badgeDTOs= new ArrayList<>();
+        for(Badge badge: badges){
+            badgeDTOs.add(modelMapper.map(badge, BadgeDTO.class));
+        }
+        return badgeDTOs;
+    }
+
+    @Override
+    public List<TransactionDTO> getMemberTransactions(int id) {
+        List<Transaction> transactions = memberRepository.allTransactionsOfMember(id);
+        List<TransactionDTO> transactionDTOs= new ArrayList<>();
+        for(Transaction transaction: transactions){
+            transactionDTOs.add(modelMapper.map(transaction, TransactionDTO.class));
+        }
+        return transactionDTOs;
+    }
+    @Override
     public MemberDTO updateMember(int id, MemberDTO memberDTO) {
         Optional<Member> memberOptional = memberRepository.findById(id);
         if(memberOptional.isPresent()){
@@ -62,11 +87,11 @@ public class MemberServiceImpl implements MemberService {
             throw new ResourceNotFoundException("Member with id " + id + " doesn't exists");
         }
     }
-
     @Override
     public List<MemberDTO> getAllMembers() {
         return memberRepository.findAll().stream()
                 .map(member -> modelMapper.map(member, MemberDTO.class))
                 .collect(Collectors.toList());
     }
+
 }

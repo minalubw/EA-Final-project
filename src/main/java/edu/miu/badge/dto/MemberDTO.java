@@ -19,6 +19,7 @@ public class MemberDTO {
     private List<Roles> roles;
 
     private List<Badge> badges;
+    private List<Transaction> transactions;
 
     private List<Membership> memberships;
 
@@ -29,7 +30,7 @@ public class MemberDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", roles=" + roles +
+
                 '}';
     }
 }

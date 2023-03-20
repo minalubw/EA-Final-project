@@ -12,7 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Roles {
+@Table(name = "[roles]")
+public class Role {
     @Id
     @GeneratedValue
     private int id;

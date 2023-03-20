@@ -3,8 +3,8 @@ package edu.miu.badge.domains;
 import edu.miu.badge.enumeration.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -17,8 +17,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[transaction_id]")
     private int id;
+
     @Column(name = "[date]")
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "member_id")
