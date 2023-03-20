@@ -8,11 +8,15 @@ import edu.miu.badge.dto.TransactionDTO;
 
 import java.util.List;
 
+import java.util.List;
+
 public interface MemberService {
-    void insertNewMember(MemberDTO memberDTO);
-     MemberDTO getMemberById(int id);
-     String deleteMemberById(int id);
-     List<BadgeDTO> getMemberBadges(int id);
-     List<TransactionDTO> getMemberTransactions(int id);
+    public MemberDTO insertNewMember(MemberDTO memberDTO);
+    public MemberDTO getMemberById(int id);
+    public String deleteMemberById(int id);
+    List<MemberDTO> getAllMembers();
+    MemberDTO updateMember(int id, MemberDTO memberDTO);
+    List<BadgeDTO> getMemberBadges(int id);
+    List<TransactionDTO> getMemberTransactions(int id);
 
 }

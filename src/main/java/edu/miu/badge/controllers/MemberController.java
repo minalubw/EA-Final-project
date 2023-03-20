@@ -8,7 +8,9 @@ import edu.miu.badge.dto.MemberDTO;
 import edu.miu.badge.dto.MembershipDTO;
 import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MemberService;
+import edu.miu.badge.services.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import java.util.List;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private MembershipService membershipService;
 
     @PostMapping
     public ResponseEntity<HttpResponse> createMember(@RequestBody MemberDTO memberDTO){
@@ -50,7 +54,6 @@ public class MemberController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
     @GetMapping("/{id}/badges")                                             // get all badges of a member
     public ResponseEntity<?> getMemberBadges(@PathVariable int id){
         try {
@@ -69,8 +72,31 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/{id}/memberships")
+    public ResponseEntity<?> getMembershipsByMemberId(@PathVariable int id) {
+        try {
+            return new ResponseEntity<>(membershipService.getMembershipsByMemberId(id), HttpStatus.OK);
+        } catch (MemberNotFoundException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping
+    public ResponseEntity<?> getAllMembers(){
+        return new ResponseEntity<>(memberService.getAllMembers(), HttpStatus.OK);
+    }
 
-
+    @PutMapping("/{memberid}")
+    public ResponseEntity<?> updateMember(@PathVariable("memberid") int id, @RequestBody MemberDTO memberDTO){
+            try {
+                return new ResponseEntity<>(memberService.updateMember(id, memberDTO), HttpStatus.OK);
+            } catch (ResourceNotFoundException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+    }
+    @GetMapping("/{memberid}/plans")
+    public ResponseEntity<?> getPlansForMember(@PathVariable int memberid){
+        return new ResponseEntity<>(membershipService.getAllPlansForMember(memberid), HttpStatus.OK);
+    }
 
 
 }

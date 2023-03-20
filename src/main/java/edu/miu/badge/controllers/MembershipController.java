@@ -14,14 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class MembershipController {
     @Autowired
     private MembershipService membershipService;
-
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(membershipService.getAll(), HttpStatus.OK);
     }
     @GetMapping("/{membershipId}")
     public ResponseEntity<?> getMembershipById(@PathVariable int membershipId){
-        return new ResponseEntity<>(membershipService.getMembershipById(membershipId), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(membershipService.getMembershipById(membershipId), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody MembershipDTO membershipDTO){

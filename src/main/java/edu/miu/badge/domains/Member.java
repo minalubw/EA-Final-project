@@ -21,6 +21,8 @@ public class Member {
     @ManyToMany
     private List<Role> roles;
     @OneToMany(cascade = CascadeType.ALL)
+    private List<Membership> memberships;
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
