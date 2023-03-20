@@ -24,8 +24,8 @@ public class Badge {
     @Enumerated(EnumType.STRING)
     private BadgeStatus badgeStatus;
     @ManyToOne(cascade = CascadeType.ALL)
+  //  @JoinColumn(name = "[member_id]")
     @JsonBackReference
-    @JoinColumn(name = "[member_id]")
     private Member member;
 
 }

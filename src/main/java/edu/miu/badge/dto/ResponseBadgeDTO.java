@@ -13,11 +13,11 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class BadgeDTO implements Serializable {
+public class ResponseBadgeDTO implements Serializable {
 
     private  int id;
     private BadgeStatus badgeStatus;
-    private  Member member;
-
+    private int badgeNumber;
+    private ResponseMemberDTO member;
 
 }

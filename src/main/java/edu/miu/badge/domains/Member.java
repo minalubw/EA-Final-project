@@ -25,11 +25,10 @@ public class Member {
     @ManyToMany
     @JsonManagedReference
     private List<Role> roles;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
     @JsonManagedReference
-    @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
     @JsonBackReference

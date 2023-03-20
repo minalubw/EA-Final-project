@@ -3,7 +3,6 @@ package edu.miu.badge.services.impl;
 import edu.miu.badge.domains.Location;
 import edu.miu.badge.domains.Plan;
 import edu.miu.badge.dto.LocationDTO;
-import edu.miu.badge.dto.MemberDTO;
 import edu.miu.badge.dto.PlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.repositories.PlanRepository;

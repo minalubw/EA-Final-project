@@ -1,20 +1,19 @@
 package edu.miu.badge.services;
 
-import edu.miu.badge.domains.Member;
-import edu.miu.badge.dto.BadgeDTO;
-import edu.miu.badge.dto.MemberDTO;
+import edu.miu.badge.dto.ResponseBadgeDTO;
+import edu.miu.badge.dto.RequestMemberDTO;
+import edu.miu.badge.dto.ResponseMemberDTO;
 import edu.miu.badge.dto.TransactionDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface MemberService {
-    public MemberDTO insertNewMember(MemberDTO memberDTO);
-    public MemberDTO getMemberById(int id);
+    public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO);
+    public ResponseMemberDTO getMemberById(int id);
     public String deleteMemberById(int id);
-    List<MemberDTO> getAllMembers();
-    MemberDTO updateMember(int id, MemberDTO memberDTO);
-    List<BadgeDTO> getMemberBadges(int id);
+    List<ResponseMemberDTO> getAllMembers();
+    ResponseMemberDTO updateMember(int id, RequestMemberDTO requestMemberDTO);
+    List<ResponseBadgeDTO> getMemberBadges(int id);
     List<TransactionDTO> getMemberTransactions(int id);
 
 }

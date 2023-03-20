@@ -1,8 +1,7 @@
 package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Badge;
-import edu.miu.badge.domains.Member;
-import edu.miu.badge.dto.BadgeDTO;
+import edu.miu.badge.dto.ResponseBadgeDTO;
 import edu.miu.badge.enumeration.BadgeStatus;
 
 import edu.miu.badge.exceptions.BadgeNotFoundException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -26,27 +24,27 @@ public class BadgeServiceImpl implements BadgeService {
     ModelMapper modelMapper;
 
     @Override
-    public BadgeDTO getBadge(int id)throws BadgeNotFoundException {
+    public ResponseBadgeDTO getBadge(int id)throws BadgeNotFoundException {
         Badge badge = badgeRepository.findById(id).orElse(null);
         if (badge == null)
             throw new BadgeNotFoundException("Badge with ID " + id + " not found");
-        return modelMapper.map(badge, BadgeDTO.class);
+        return modelMapper.map(badge, ResponseBadgeDTO.class);
     }
 
     @Override
-    public BadgeDTO createBadge(BadgeDTO badge) {                            //exception handling
+    public ResponseBadgeDTO createBadge(ResponseBadgeDTO badge) {                            //exception handling
         Badge badgeToSave = modelMapper.map(badge, Badge.class);
-        return modelMapper.map(badgeRepository.save(badgeToSave), BadgeDTO.class);
+        return modelMapper.map(badgeRepository.save(badgeToSave), ResponseBadgeDTO.class);
     }
 
     @Override
-    public BadgeDTO updateBadge(int id,BadgeDTO badge) throws BadgeNotFoundException{
+    public ResponseBadgeDTO updateBadge(int id, ResponseBadgeDTO badge) throws BadgeNotFoundException{
         Badge badgeToUpdate = badgeRepository.findById(id).orElse(null);
         if (badgeToUpdate == null)
             throw new BadgeNotFoundException("Badge with ID " + id + " not found");
         badgeToUpdate.setBadgeStatus(badge.getBadgeStatus());
         //badgeToUpdate.setMember(badge.getMember());
-        return modelMapper.map(badgeRepository.save(badgeToUpdate), BadgeDTO.class);
+        return modelMapper.map(badgeRepository.save(badgeToUpdate), ResponseBadgeDTO.class);
     }
 
     @Override
@@ -62,13 +60,13 @@ public class BadgeServiceImpl implements BadgeService {
     }
 
     @Override
-    public List<BadgeDTO> getAllBadges() {
+    public List<ResponseBadgeDTO> getAllBadges() {
         List<Badge> badges = badgeRepository.findAll();
-        List<BadgeDTO> badgeDTOS = new ArrayList<>();
+        List<ResponseBadgeDTO> responseBadgeDTOS = new ArrayList<>();
         for (Badge badge : badges) {
-            badgeDTOS.add(modelMapper.map(badge, BadgeDTO.class));
+            responseBadgeDTOS.add(modelMapper.map(badge, ResponseBadgeDTO.class));
         }
-        return badgeDTOS;
+        return responseBadgeDTOS;
     }
 
 
