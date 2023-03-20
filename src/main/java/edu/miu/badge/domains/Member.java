@@ -21,17 +21,13 @@ public class Member {
     private String email;
     @ManyToMany
     @JsonManagedReference
-    private List<Roles> roles;
+    private List<Role> roles;
     @OneToMany(cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Transaction> transactions;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Membership> memberships;
-
-
 
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)

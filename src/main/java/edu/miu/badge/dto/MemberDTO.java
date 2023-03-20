@@ -2,7 +2,8 @@ package edu.miu.badge.dto;
 
 import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Membership;
-import edu.miu.badge.domains.Roles;
+import edu.miu.badge.domains.Role;
+import edu.miu.badge.domains.Transaction;
 import lombok.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class MemberDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private List<Roles> roles;
+    private List<Role> roles;
 
     private List<Badge> badges;
     private List<Transaction> transactions;
