@@ -16,8 +16,11 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
     private String email;
     @ManyToMany
     @JsonManagedReference
@@ -32,6 +35,4 @@ public class Member {
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     private List<Membership> memberships;
-
-
 }

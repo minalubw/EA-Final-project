@@ -32,6 +32,4 @@ public class Membership {
     private PlanType planType;
     @Column(name="[number_of_allowance]")
     private int numberOfAllowance;
-
-
 }

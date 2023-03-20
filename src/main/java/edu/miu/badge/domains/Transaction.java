@@ -18,8 +18,8 @@ public class Transaction {
     @Column(name = "[transaction_id]")
     private int id;
 
-    @Column(name = "[date]")
-    private LocalDateTime date = LocalDateTime.now();
+    @Column(name = "[date]", nullable = false)
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -33,6 +33,5 @@ public class Transaction {
     @Column(name = "[type]")
     @Enumerated(EnumType.STRING)
     private TransactionType type;
-
 }
 

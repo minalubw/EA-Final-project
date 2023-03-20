@@ -21,15 +21,15 @@ public class Plan {
     private String name;
     @Column(nullable = false)
     private String description;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinTable(name = "Plan_Plantypes")
-    @Column(nullable = false)
     private List<PlanType> planTypes;
-    @Column(nullable = false)
-    @OneToMany(cascade = CascadeType.ALL)
+
+    @OneToMany
     private List<Location> locations;
-    @Column(nullable = false)
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Roles> allowedRoles;
+
+    @OneToMany
+    @JoinTable(name = "Plan_Roles")
+    private List<Role> allowedRoles;
 
 }
