@@ -3,6 +3,7 @@ package edu.miu.badge.services.impl;
 import edu.miu.badge.domains.Location;
 import edu.miu.badge.domains.Plan;
 import edu.miu.badge.dto.LocationDTO;
+import edu.miu.badge.dto.MemberDTO;
 import edu.miu.badge.dto.PlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.repositories.PlanRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,11 +67,9 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public List<PlanDTO> getAllPlans() {
-        List<PlanDTO> planDTOS = new ArrayList<>();
-        for (Plan p: planRepository.findAll()) {
-            planDTOS.add(modelMapper.map(p, PlanDTO.class));
-        }
-        return planDTOS;
+        return planRepository.findAll().stream()
+                .map(plan -> modelMapper.map(plan, PlanDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class MembershipController {
     @Autowired
     private MembershipService membershipService;
-
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(membershipService.getAll(), HttpStatus.OK);

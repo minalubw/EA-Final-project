@@ -54,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
             toBeUpdated.setEmail(memberDTO.getEmail());
             toBeUpdated.setRoles(memberDTO.getRoles());
             toBeUpdated.setBadges(memberDTO.getBadges());
+            toBeUpdated.setMemberships(memberDTO.getMemberships());
             return modelMapper.map(memberRepository.save(toBeUpdated), MemberDTO.class);
         }else {
             throw new ResourceNotFoundException("Member with id " + id + " doesn't exists");

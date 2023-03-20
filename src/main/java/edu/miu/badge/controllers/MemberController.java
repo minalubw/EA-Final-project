@@ -63,12 +63,15 @@ public class MemberController {
 
     @PutMapping("/{memberid}")
     public ResponseEntity<?> updateMember(@PathVariable("memberid") int id, @RequestBody MemberDTO memberDTO){
-        try {
-            return new ResponseEntity<>(memberService.updateMember(id, memberDTO), HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+            try {
+                return new ResponseEntity<>(memberService.updateMember(id, memberDTO), HttpStatus.OK);
+            } catch (ResourceNotFoundException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
     }
-
+    @GetMapping("/{memberid}/plans")
+    public ResponseEntity<?> getPlansForMember(@PathVariable int memberid){
+        return new ResponseEntity<>(membershipService.getAllPlansForMember(memberid), HttpStatus.OK);
+    }
 
 }
