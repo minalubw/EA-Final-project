@@ -1,15 +1,15 @@
 package edu.miu.badge.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Membership {
@@ -22,7 +22,7 @@ public class Membership {
     private LocalDate endDate;
     @ManyToOne
     @JoinColumn(name="[member_id]", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private Member member;
     @ManyToOne
     @JoinColumn(name="[plan_id]", nullable = false)
@@ -32,4 +32,6 @@ public class Membership {
     private PlanType planType;
     @Column(name="[number_of_allowance]")
     private int numberOfAllowance;
+
+
 }

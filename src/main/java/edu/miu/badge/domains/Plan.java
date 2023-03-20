@@ -2,11 +2,15 @@ package edu.miu.badge.domains;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "plan_table")
 public class Plan {
@@ -26,6 +30,6 @@ public class Plan {
     private List<Location> locations;
     @Column(nullable = false)
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Role> allowedRoles;
+    private List<Roles> allowedRoles;
 
 }

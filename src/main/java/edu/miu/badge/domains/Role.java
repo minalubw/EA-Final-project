@@ -1,15 +1,15 @@
 package edu.miu.badge.domains;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import edu.miu.badge.enumeration.RoleType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "[roles]")
@@ -19,5 +19,7 @@ public class Role {
     private int id;
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
-
+    @JsonBackReference
+    @ManyToMany(mappedBy = "roles")
+    private List<Member> member;
 }
