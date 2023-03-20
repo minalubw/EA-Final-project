@@ -9,6 +9,8 @@ import edu.miu.badge.services.LocationService;
 import edu.miu.badge.services.TimeSlotService;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +28,11 @@ public class LocationServiceImpl implements LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public Location createLocation(LocationDTO locationDTO) {
+    public LocationDTO createLocation(LocationDTO locationDTO) {
         Location location = new Location();
         location.setLocationId(null);
         location.setLocationName(locationDTO.getLocationName());
@@ -41,25 +45,23 @@ public class LocationServiceImpl implements LocationService {
                 location.getTimeSlots().add(timeSlotService.createTimeSlot(timeSlotDTO));
             }
         }
-
-        return locationRepository.save(location);
-
+        return modelMapper.map(locationRepository.save(location),LocationDTO.class);
     }
 
     @Override
-    public Location getLocationById(Long id) {
-        return locationRepository.findById(id).get();
+    public LocationDTO getLocationById(Long id) {
+        return modelMapper.map(locationRepository.findById(id).get(),LocationDTO.class) ;
     }
 
     @Override
-    public Location updateLocation(Long id, LocationDTO locationDTO) {
-        Location old = getLocationById(id);
+    public LocationDTO updateLocation(Long id, LocationDTO locationDTO) {
+        Location old = locationRepository.findById(id).get();
         old.setLocationName(locationDTO.getLocationName());
         old.setDescription(locationDTO.getDescription());
         old.setCapacity(locationDTO.getCapacity());
         old.setLocationType(locationDTO.getLocationType());
         //old.setTimeSlots(new ArrayList<TimeSlot>());
-        return locationRepository.save(old);
+        return modelMapper.map(locationRepository.save(old),LocationDTO.class);
     }
 
     @Override
@@ -68,8 +70,13 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<Location> getAllLocations() {
-        return locationRepository.findAll();
+    public List<LocationDTO> getAllLocations() {
+        List <Location> locations = locationRepository.findAll();
+        List<LocationDTO> locationDTOs = new ArrayList<>();
+        for (Location location : locations) {
+            locationDTOs.add(modelMapper.map(location, LocationDTO.class));
+        }
+        return locationDTOs;
     }
 
 }

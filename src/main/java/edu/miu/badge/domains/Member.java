@@ -23,6 +23,9 @@ public class Member {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "[member_id]")
     private List<Badge> badges;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
 
 
 }

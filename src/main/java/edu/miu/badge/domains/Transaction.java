@@ -20,7 +20,7 @@ public class Transaction {
     @Column(name = "[transaction_id]")
     private int id;
     @Column(name = "[date]")
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "member_id")
