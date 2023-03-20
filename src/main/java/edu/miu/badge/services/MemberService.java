@@ -1,12 +1,10 @@
 package edu.miu.badge.services;
 
-import edu.miu.badge.domains.Badge;
+import edu.miu.badge.domains.Member;
 import edu.miu.badge.dto.BadgeDTO;
 import edu.miu.badge.dto.MemberDTO;
-import edu.miu.badge.dto.MembershipDTO;
 import edu.miu.badge.dto.TransactionDTO;
-
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

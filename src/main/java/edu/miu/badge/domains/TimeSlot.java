@@ -18,7 +18,7 @@ import lombok.ToString;
  */
 @Entity @Table(name = "timeslots")
 @Setter @Getter @AllArgsConstructor
-@NoArgsConstructor @ToString
+@NoArgsConstructor
 public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

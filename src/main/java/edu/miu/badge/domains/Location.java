@@ -16,7 +16,7 @@ import lombok.ToString;
  */
 @Entity @Table(name = "locations")
 @Setter @Getter @AllArgsConstructor
-@NoArgsConstructor @ToString
+@NoArgsConstructor
 
 public class Location {
     @Id
