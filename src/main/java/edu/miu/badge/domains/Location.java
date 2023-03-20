@@ -1,16 +1,8 @@
 package edu.miu.badge.domains;
 
 import edu.miu.badge.enumeration.LocationType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,11 +22,15 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationId;
+    @Column(nullable = false)
     private String locationName;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private int capacity;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<TimeSlot> timeSlots;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private LocationType locationType;
 }

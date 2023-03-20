@@ -23,9 +23,11 @@ public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long timeSlotId;
-    
+    @Column(nullable = false)
     private LocalDateTime startTime;
+    @Column(nullable = false)
     private LocalDateTime endTime;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private  DayOfTheWeek day;
 }

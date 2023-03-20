@@ -22,7 +22,6 @@ public class Membership {
     private LocalDate endDate;
     @ManyToOne
     @JoinColumn(name="[member_id]", nullable = false)
-    @JsonIgnore
     private Member member;
     @ManyToOne
     @JoinColumn(name="[plan_id]", nullable = false)

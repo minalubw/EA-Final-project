@@ -16,13 +16,12 @@ public class Badge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "[badge_number]")
+    @Column(name = "[badge_number]", nullable = false)
     private int badgeNumber;
-    @Column(name = "[is_active]")
+    @Column(name = "[is_active]", nullable = false)
     @Enumerated(EnumType.STRING)
     private BadgeStatus badgeStatus;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "[member_id]")
     private Member member;
 
