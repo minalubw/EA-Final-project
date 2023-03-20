@@ -3,6 +3,7 @@ package edu.miu.badge.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Role;
+import edu.miu.badge.domains.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class MemberDTO {
     private List<Role> roles;
 
     private List<Badge> badges;
+
+    private List<Transaction> transactions;
 
     @Override
     public String toString() {

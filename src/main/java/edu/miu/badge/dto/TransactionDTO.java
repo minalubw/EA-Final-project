@@ -22,5 +22,5 @@ public class TransactionDTO implements Serializable {
     private  Member member;
     private  Membership membership;
     private  Location location;
-    private  TransactionType type;
+    private TransactionType type;
 }

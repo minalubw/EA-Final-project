@@ -65,4 +65,14 @@ public class MembershipServiceImpl implements MembershipService {
         }
     }
 
+    @Override
+    public List<MembershipDTO> getAllMembershipOfMember(int memberId) {
+        List<MembershipDTO> membershipDTOS = new ArrayList<MembershipDTO>();
+        for (Membership p: membershipRepository.findAll()) {
+            membershipDTOS.add(modelMapper.map(p, MembershipDTO.class));
+        }
+        return membershipDTOS;
+    }
+
+
 }

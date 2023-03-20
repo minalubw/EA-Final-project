@@ -2,9 +2,11 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Badge;
 import edu.miu.badge.domains.Member;
+import edu.miu.badge.domains.Membership;
 import edu.miu.badge.domains.Transaction;
 import edu.miu.badge.dto.BadgeDTO;
 import edu.miu.badge.dto.MemberDTO;
+import edu.miu.badge.dto.MembershipDTO;
 import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
@@ -12,12 +14,14 @@ import edu.miu.badge.services.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
@@ -66,5 +70,15 @@ public class MemberServiceImpl implements MemberService {
             transactionDTOs.add(modelMapper.map(transaction, TransactionDTO.class));
         }
         return transactionDTOs;
+    }
+
+    @Override
+    public List<MembershipDTO> getAllMembershipOfMember(int memberId) {
+        List<MembershipDTO> membershipDTOS = new ArrayList<MembershipDTO>();
+        List<Membership> memberships = memberRepository.allMembershipsOfMember(memberId);
+        for (Membership p: memberships) {
+            membershipDTOS.add(modelMapper.map(p, MembershipDTO.class));
+        }
+        return membershipDTOS;
     }
 }
