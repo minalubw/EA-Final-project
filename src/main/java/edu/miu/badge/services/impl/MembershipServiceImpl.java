@@ -2,7 +2,7 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Membership;
 import edu.miu.badge.dto.MembershipDTO;
-import edu.miu.badge.dto.PlanDTO;
+import edu.miu.badge.dto.ResponsePlanDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MembershipRepository;
 import edu.miu.badge.services.MembershipService;
@@ -74,9 +74,9 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public List<PlanDTO> getAllPlansForMember(int id) {
+    public List<ResponsePlanDTO> getAllPlansForMember(int id) {
         return membershipRepository.findPlansByMemberId(id).stream()
-                .map(p -> modelMapper.map(p, PlanDTO.class)).collect(Collectors.toList());
+                .map(p -> modelMapper.map(p, ResponsePlanDTO.class)).collect(Collectors.toList());
     }
 
 

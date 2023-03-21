@@ -6,6 +6,7 @@ import edu.miu.badge.enumeration.DayOfTheWeek;
 import edu.miu.badge.repositories.TimeSlotRepository;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class TimeSlotController {
     }
     @GetMapping("/test")// this is just for testing...
     public String testt(){
-        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10), DayOfTheWeek.FRIDAY));
+        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalTime.now(), LocalTime.now().plusHours(2), DayOfTheWeek.FRIDAY));
         return "location added for test";
     }
     @PutMapping("/{id}")

@@ -15,6 +15,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlanType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
