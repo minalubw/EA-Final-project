@@ -24,6 +24,7 @@ public class TimeSlotServiceImpl implements TimeSlotService{
         ts.setTimeSlotId(null);
         ts.setStartTime(timeSlotDTO.getStartTime());
         ts.setEndTime(timeSlotDTO.getEndTime());
+        ts.setDay(timeSlotDTO.getDay());
         return timeSlotRepository.save(ts);
     }
 

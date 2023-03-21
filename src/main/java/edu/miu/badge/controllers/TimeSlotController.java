@@ -2,6 +2,7 @@ package edu.miu.badge.controllers;
 
 import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.TimeSlotDTO;
+import edu.miu.badge.enumeration.DayOfTheWeek;
 import edu.miu.badge.repositories.TimeSlotRepository;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class TimeSlotController {
     }
     @GetMapping("/test")// this is just for testing...
     public String testt(){
-        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
+        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10), DayOfTheWeek.FRIDAY));
         return "location added for test";
     }
     @PutMapping("/{id}")
