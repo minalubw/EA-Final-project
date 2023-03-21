@@ -6,6 +6,7 @@ import edu.miu.badge.enumeration.DayOfTheWeek;
 import edu.miu.badge.repositories.TimeSlotRepository;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,35 +26,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/timeslots")
 public class TimeSlotController {
+
     @Autowired
     private ModelMapper mm;
     @Autowired
     private TimeSlotService timeSlotService;
-    
+
     @GetMapping()
-    public List<TimeSlot> getAllTimeslots(){
+    public List<TimeSlot> getAllTimeslots() {
         return timeSlotService.getAllTimeSlots();
     }
+
     @GetMapping("/{id}")
-    public TimeSlot getById(@PathVariable Long id){
+    public TimeSlot getById(@PathVariable Long id) {
         return timeSlotService.getTimeSlotById(id);
     }
-    
+
     @PostMapping()
-    public TimeSlot add(@RequestBody TimeSlotDTO tsDTO){
+    public TimeSlot add(@RequestBody TimeSlotDTO tsDTO) {
         return timeSlotService.createTimeSlot(tsDTO);
     }
+
     @GetMapping("/test")// this is just for testing...
-    public String testt(){
-        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10), DayOfTheWeek.FRIDAY));
-        return "location added for test";
+    public String testt() {
+        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalTime.now(), LocalTime.now().plusHours(4), DayOfTheWeek.FRIDAY));
+        return "a generic timeslot is added for testing purposes";
     }
+
     @PutMapping("/{id}")
-    public TimeSlot update(@PathVariable Long id, @RequestBody TimeSlotDTO timeSlotDTO){
+    public TimeSlot update(@PathVariable Long id, @RequestBody TimeSlotDTO timeSlotDTO) {
         return timeSlotService.updateTimeSlot(id, timeSlotDTO);
     }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         timeSlotService.deleteTimeSlot(id);
     }
 }

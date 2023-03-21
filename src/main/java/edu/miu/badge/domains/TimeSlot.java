@@ -4,6 +4,7 @@ import edu.miu.badge.enumeration.DayOfTheWeek;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -24,9 +25,9 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long timeSlotId;
     @Column(nullable = false)
-    private LocalDateTime startTime;
+    private LocalTime startTime;
     @Column(nullable = false)
-    private LocalDateTime endTime;
+    private LocalTime endTime;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private  DayOfTheWeek day;
