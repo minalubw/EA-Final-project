@@ -1,9 +1,6 @@
 package edu.miu.badge.services.impl;
 
-import edu.miu.badge.domains.Member;
-import edu.miu.badge.domains.Membership;
-import edu.miu.badge.domains.Plan;
-import edu.miu.badge.domains.PlanType;
+import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.RequestMembershipDTO;
 import edu.miu.badge.dto.ResponseMembershipDTO;
 import edu.miu.badge.dto.ResponsePlanDTO;
@@ -56,6 +53,17 @@ public class MembershipServiceImpl implements MembershipService {
         Optional<Plan> plan = planRepository.findById(membershipDTO.getPlan_id());
         if (!plan.isPresent())
             throw new ResourceNotFoundException("Plan with ID " + membershipDTO.getPlan_id() + " not found");
+        //check role of member and plan's allowed roles
+        Boolean validRolesPresent = false;
+        for(Role r: member.get().getRoles()){
+            for (Role allowedRole:plan.get().getAllowedRoles()){
+                if(allowedRole.getId() == r.getId()){
+                    validRolesPresent = true;
+                }
+            }
+        }
+        if (!validRolesPresent) throw new ResourceNotFoundException("Member with role is not allowed for selected plan");
+
         //check plan type
         Boolean validPlanTypePresent = false;
         for(PlanType pt: plan.get().getPlanTypes()){
@@ -85,6 +93,17 @@ public class MembershipServiceImpl implements MembershipService {
             Optional<Plan> plan = planRepository.findById(membershipDTO.getPlan_id());
             if (!plan.isPresent())
                 throw new ResourceNotFoundException("Plan with ID " + membershipDTO.getPlan_id() + " not found");
+            //check role of member and plan's allowed roles
+            Boolean validRolesPresent = false;
+            for(Role r: member.get().getRoles()){
+                for (Role allowedRole:plan.get().getAllowedRoles()){
+                    if(allowedRole.getId() == r.getId()){
+                        validRolesPresent = true;
+                    }
+                }
+            }
+            if (!validRolesPresent) throw new ResourceNotFoundException("Member with role is not allowed for selected plan");
+
             //check plan type
             Boolean validPlanTypePresent = false;
             for(PlanType pt: plan.get().getPlanTypes()){

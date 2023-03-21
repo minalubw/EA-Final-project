@@ -3,7 +3,7 @@ package edu.miu.badge.services.impl;
 import edu.miu.badge.domains.Location;
 import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.LocationDTO;
-import edu.miu.badge.dto.TimeSlotDTO;
+import edu.miu.badge.exceptions.LocationNotFoundException;
 import edu.miu.badge.repositories.LocationRepository;
 import edu.miu.badge.services.LocationService;
 import edu.miu.badge.services.TimeSlotService;
@@ -44,13 +44,15 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location getLocationById(Long id) {
-        return locationRepository.findById(id).get();
+    public Location getLocationById(Long id) throws LocationNotFoundException{
+        return locationRepository.findById(id).orElseThrow(
+        () -> new LocationNotFoundException("Location with ID " + id + " is Not found")
+        );
     }
 
     @Override
-    public Location updateLocation(Long id, LocationDTO locationDTO) {
-        Location old = locationRepository.findById(id).get();
+    public Location updateLocation(Long id, LocationDTO locationDTO) throws LocationNotFoundException {
+        Location old = getLocationById(id);
         old.setLocationName(locationDTO.getLocationName());
         old.setDescription(locationDTO.getDescription());
         old.setCapacity(locationDTO.getCapacity());
@@ -59,8 +61,9 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public void deleteLocation(Long id) {
-        locationRepository.deleteById(id);
+    public String deleteLocation(Long id) throws LocationNotFoundException{
+        locationRepository.delete(getLocationById(id));
+        return "Location with ID " + id + " has been removed";
     }
 
     @Override

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package edu.miu.badge.controllers;
 
 import edu.miu.badge.domains.Location;
@@ -9,7 +5,8 @@ import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.TimeSlotDTO;
 import edu.miu.badge.enumeration.LocationType;
-import edu.miu.badge.exceptions.ResourceNotFoundException;
+import edu.miu.badge.exceptions.LocationNotFoundException;
+
 import edu.miu.badge.services.LocationService;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -53,8 +50,9 @@ public class LocationController {
     }
 
     @GetMapping("/{id}")
-    public Location getLocationById(@PathVariable Long id) {
-            return locationService.getLocationById(id);
+    public Location getLocationById(@PathVariable Long id) throws LocationNotFoundException {
+        return locationService.getLocationById(id);
+
     }
 
     @PostMapping()
@@ -70,22 +68,22 @@ public class LocationController {
     }
 
     @PutMapping("/{id}")
-    public Location update(@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
+    public Location update(@PathVariable Long id, @RequestBody LocationDTO locationDTO) throws LocationNotFoundException {
         return locationService.updateLocation(id, locationDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        locationService.deleteLocation(id);
+    public String delete(@PathVariable Long id) throws LocationNotFoundException {
+        return locationService.deleteLocation(id);
     }
 
     @GetMapping("/{id}/timeslots")
-    public List<TimeSlot> getTimeSlots(@PathVariable Long id) {
+    public List<TimeSlot> getTimeSlots(@PathVariable Long id) throws LocationNotFoundException {
         return locationService.getLocationById(id).getTimeSlots();
     }
 
     @PostMapping("/{id}/timeslots")
-    public List<TimeSlot> getTimeSlots(@PathVariable Long id, @RequestBody List<TimeSlotDTO> timeSlotDTOs) {
+    public List<TimeSlot> getTimeSlots(@PathVariable Long id, @RequestBody List<TimeSlotDTO> timeSlotDTOs) throws LocationNotFoundException {
         Location l = locationService.getLocationById(id);
         for (TimeSlotDTO tsdto : timeSlotDTOs) {
             l.getTimeSlots().add(timeSlotService.createTimeSlot(tsdto));

@@ -15,12 +15,11 @@ import lombok.ToString;
  * @author Daniel Tsegay Meresie
  */
 @Entity
-@Table(name = "locations")
+@Table(name = "Locations")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Location {
 
     @Id
@@ -33,6 +32,7 @@ public class Location {
     @Column(nullable = false)
     private int capacity;
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Location_Timeslot")
     private List<TimeSlot> timeSlots;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

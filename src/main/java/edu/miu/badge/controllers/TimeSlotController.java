@@ -3,6 +3,7 @@ package edu.miu.badge.controllers;
 import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.TimeSlotDTO;
 import edu.miu.badge.enumeration.DayOfTheWeek;
+import edu.miu.badge.exceptions.TimeSlotNotFoundException;
 import edu.miu.badge.repositories.TimeSlotRepository;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ public class TimeSlotController {
     }
 
     @GetMapping("/{id}")
-    public TimeSlot getById(@PathVariable Long id) {
+    public TimeSlot getById(@PathVariable Long id) throws TimeSlotNotFoundException{
         return timeSlotService.getTimeSlotById(id);
     }
 
@@ -54,13 +55,13 @@ public class TimeSlotController {
     }
 
     @PutMapping("/{id}")
-    public TimeSlot update(@PathVariable Long id, @RequestBody TimeSlotDTO timeSlotDTO) {
+    public TimeSlot update(@PathVariable Long id, @RequestBody TimeSlotDTO timeSlotDTO) throws TimeSlotNotFoundException {
         return timeSlotService.updateTimeSlot(id, timeSlotDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        timeSlotService.deleteTimeSlot(id);
+    public String delete(@PathVariable Long id) throws TimeSlotNotFoundException{
+        return timeSlotService.deleteTimeSlot(id);
     }
 }
 
