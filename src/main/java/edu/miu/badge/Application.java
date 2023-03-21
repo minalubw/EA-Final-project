@@ -23,9 +23,9 @@ public class Application implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Server is running..." );
-        planTypeRepository.save(new PlanType(1, PlanTypeEnum.LIMITED));
-        planTypeRepository.save(new PlanType(2, PlanTypeEnum.UNLIMITED));
-        planTypeRepository.save(new PlanType(3, PlanTypeEnum.CHECKER));
+//        planTypeRepository.save(new PlanType(1, PlanTypeEnum.LIMITED));
+//        planTypeRepository.save(new PlanType(2, PlanTypeEnum.UNLIMITED));
+//        planTypeRepository.save(new PlanType(3, PlanTypeEnum.CHECKER));
     }
     @Bean
     ModelMapper modelMapper() {
