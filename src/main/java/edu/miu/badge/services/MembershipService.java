@@ -1,18 +1,20 @@
 package edu.miu.badge.services;
 
 
-import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.RequestMemberDTO;
+import edu.miu.badge.dto.RequestMembershipDTO;
+import edu.miu.badge.dto.ResponseMembershipDTO;
 import edu.miu.badge.dto.PlanDTO;
 
 import java.util.List;
 
 public interface MembershipService {
-    public MembershipDTO getMembershipById(int membershipId);
-    public List<MembershipDTO> getAll();
-    public MembershipDTO create(MembershipDTO membershipDTO);
-    public MembershipDTO update(int membershipId, MembershipDTO membershipDTO);
+    public ResponseMembershipDTO getMembershipById(int membershipId);
+    public List<ResponseMembershipDTO> getAll();
+    public ResponseMembershipDTO create(RequestMembershipDTO membershipDTO);
+    public ResponseMembershipDTO update(int membershipId, RequestMembershipDTO membershipDTO);
     public String delete(int membershipId);
-    public List<MembershipDTO> getMembershipsByMemberId(int memberId);
-    public List<PlanDTO> getAllPlansForMember(int id);
+    public List<ResponseMembershipDTO> getMembershipsByMemberId(int memberId);
+    public List<PlanDTO> getAllPlansForMember(int memberId);
 
 }
