@@ -3,6 +3,7 @@ package edu.miu.badge.controllers;
 import edu.miu.badge.dto.RequestPlanDTO;
 import edu.miu.badge.dto.ResponsePlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,11 @@ public class PlanController {
 
     @GetMapping("/{planid}")
     public ResponseEntity<?> getOnePlan(@PathVariable("planid") Integer id){
-        return new ResponseEntity<>(planService.getPlanById(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(planService.getPlanById(id), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping
@@ -26,7 +31,11 @@ public class PlanController {
     }
     @PostMapping
     public ResponseEntity<?> addPlan(@RequestBody RequestPlanDTO requestPlanDTO){
-        return new ResponseEntity<>(planService.createPlan(requestPlanDTO), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(planService.createPlan(requestPlanDTO), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
     }
 
     @PutMapping("/{planid}")

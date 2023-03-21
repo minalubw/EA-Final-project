@@ -1,11 +1,9 @@
 package edu.miu.badge.services.impl;
 
-import edu.miu.badge.domains.Location;
-import edu.miu.badge.domains.Plan;
-import edu.miu.badge.domains.PlanType;
-import edu.miu.badge.domains.Role;
+import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.RequestPlanDTO;
+import edu.miu.badge.dto.ResponseMemberDTO;
 import edu.miu.badge.dto.ResponsePlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
@@ -42,7 +40,11 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public ResponsePlanDTO getPlanById(Integer id) {
-        return modelMapper.map(planRepository.findById(id), ResponsePlanDTO.class);
+        Optional<Plan> plan = planRepository.findById(id);
+        if(plan.isPresent()){
+            return modelMapper.map(plan.get(), ResponsePlanDTO.class);
+        }
+        throw new ResourceNotFoundException("Plan with id " + id + " not found");
     }
 
     @Override
