@@ -123,7 +123,7 @@ public class MembershipServiceImpl implements MembershipService {
         List<ResponseMembershipDTO> list =  membershipRepository.findMembershipsByMemberId(memberId).stream()
                 .map(membership -> modelMapper.map(membership, ResponseMembershipDTO.class))
                 .collect(Collectors.toList());
-        if(planType.isEmpty()) {
+        if(planType == null) {
             return list;
         }
         else{

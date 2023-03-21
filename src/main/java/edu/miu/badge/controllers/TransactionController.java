@@ -1,8 +1,7 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.domains.Transaction;
 import edu.miu.badge.dto.TransactionDTO;
-import edu.miu.badge.exceptions.TransactionNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ public class TransactionController {
         try{
             TransactionDTO transaction = transactionService.getTransaction(id);
             return new ResponseEntity<TransactionDTO>(transaction, HttpStatus.OK);
-        }catch (TransactionNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -34,7 +33,7 @@ public class TransactionController {
         try {
             TransactionDTO updatedTransaction = transactionService.updateTransaction(id, transaction);
             return new ResponseEntity<TransactionDTO> (updatedTransaction, HttpStatus.OK);
-        }catch (TransactionNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
@@ -43,7 +42,7 @@ public class TransactionController {
     public ResponseEntity<String> deleteTransaction(@PathVariable int id){
         try {
             return new ResponseEntity<String> (transactionService.deleteTransaction(id), HttpStatus.OK);
-        }catch (TransactionNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 

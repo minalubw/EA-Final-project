@@ -6,6 +6,7 @@ import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.TimeSlotDTO;
 import edu.miu.badge.enumeration.LocationType;
 import edu.miu.badge.exceptions.LocationNotFoundException;
+
 import edu.miu.badge.services.LocationService;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -51,6 +52,7 @@ public class LocationController {
     @GetMapping("/{id}")
     public Location getLocationById(@PathVariable Long id) throws LocationNotFoundException {
         return locationService.getLocationById(id);
+
     }
 
     @PostMapping()

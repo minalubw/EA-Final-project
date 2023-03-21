@@ -28,7 +28,11 @@ public class MembershipController {
     }
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody RequestMembershipDTO membershipDTO){
-        return new ResponseEntity<>(membershipService.create(membershipDTO), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(membershipService.create(membershipDTO), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
     @PutMapping("/{membershipId}")
     public ResponseEntity<?> update(@PathVariable int membershipId, @RequestBody RequestMembershipDTO membershipDTO){

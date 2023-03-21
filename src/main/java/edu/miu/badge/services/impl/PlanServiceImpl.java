@@ -1,13 +1,9 @@
 package edu.miu.badge.services.impl;
 
-import edu.miu.badge.domains.Location;
-import edu.miu.badge.domains.Plan;
-import edu.miu.badge.domains.PlanType;
-import edu.miu.badge.domains.Role;
+import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.RequestPlanDTO;
 import edu.miu.badge.dto.ResponsePlanDTO;
-import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.LocationRepository;
 import edu.miu.badge.repositories.PlanRepository;
@@ -42,7 +38,11 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public ResponsePlanDTO getPlanById(Integer id) {
-        return modelMapper.map(planRepository.findById(id), ResponsePlanDTO.class);
+        Optional<Plan> plan = planRepository.findById(id);
+        if(plan.isPresent()){
+            return modelMapper.map(plan.get(), ResponsePlanDTO.class);
+        }
+        throw new ResourceNotFoundException("Plan with id " + id + " not found");
     }
 
     @Override
@@ -58,7 +58,7 @@ public class PlanServiceImpl implements PlanService {
             return modelMapper.map(planRepository.save(toBeUpdated), ResponsePlanDTO.class);
         }
         else{
-            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+            throw new ResourceNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
 
@@ -70,7 +70,7 @@ public class PlanServiceImpl implements PlanService {
            return "Plan with id " + id + " deleted!";
         }
         else{
-            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+            throw new ResourceNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
 
@@ -91,7 +91,7 @@ public class PlanServiceImpl implements PlanService {
             }
             return locationDTOS;
         }else {
-            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+            throw new ResourceNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
 

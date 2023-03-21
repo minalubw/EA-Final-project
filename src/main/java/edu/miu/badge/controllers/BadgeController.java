@@ -3,7 +3,7 @@ package edu.miu.badge.controllers;
 
 import edu.miu.badge.dto.RequestBadgeDTO;
 import edu.miu.badge.dto.ResponseBadgeDTO;
-import edu.miu.badge.exceptions.BadgeNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.BadgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class BadgeController {
     public ResponseEntity<?> getBadge(@PathVariable int id) {                          // get a badge by id
         try {
             return new ResponseEntity<ResponseBadgeDTO>(badgeService.getBadge(id), HttpStatus.OK);
-        } catch (BadgeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -37,7 +37,7 @@ public class BadgeController {
         try {
             ResponseBadgeDTO newBadge = badgeService.createBadge(badge);
             return new ResponseEntity<ResponseBadgeDTO>(newBadge, HttpStatus.OK);
-        } catch (BadgeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -47,16 +47,16 @@ public class BadgeController {
         try {
             ResponseBadgeDTO updatedBadge = badgeService.updateBadge(id, badge);
             return new ResponseEntity<ResponseBadgeDTO>(updatedBadge, HttpStatus.OK);
-        } catch (BadgeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/badges/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> inactiveBadge(@PathVariable int id) {                        // inactive a badge
         try {
             return new ResponseEntity<String>(badgeService.inactiveBadge(id), HttpStatus.OK);
-        } catch (BadgeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
