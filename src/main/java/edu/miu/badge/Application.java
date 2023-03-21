@@ -30,6 +30,7 @@ public class Application implements CommandLineRunner{
         planTypeRepository.save(new PlanType(1, PlanTypeEnum.LIMITED));
         planTypeRepository.save(new PlanType(2, PlanTypeEnum.UNLIMITED));
         planTypeRepository.save(new PlanType(3, PlanTypeEnum.CHECKER));
+
     }
     @Bean
     ModelMapper modelMapper() {
