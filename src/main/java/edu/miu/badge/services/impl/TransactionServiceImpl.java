@@ -105,29 +105,7 @@ public class TransactionServiceImpl implements TransactionService {
         return modelMapper.map(transaction, ResponseTransactionDTO.class);
     }
 
-    @Override
-    public ResponseTransactionDTO updateTransaction(int transactionId, ResponseTransactionDTO transaction) throws TransactionNotFoundException {
-        Transaction transactionToBeUpdated = transactionRepository.findById(transactionId).orElse(null);
-        if (transactionToBeUpdated == null) {
-            throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found");
-        }
-        transactionToBeUpdated.setDate(transaction.getDate());
-        transactionToBeUpdated.setMember(modelMapper.map(transaction.getMember(), Member.class));
-        transactionToBeUpdated.setMembership(modelMapper.map(transaction.getMembership(), Membership.class));
-        transactionToBeUpdated.setLocation(modelMapper.map(transaction.getLocation(), Location.class));
-        transactionToBeUpdated.setType(transaction.getType());
-        return modelMapper.map(transactionRepository.save(transactionToBeUpdated), ResponseTransactionDTO.class);
-    }
 
-    @Override
-    public String deleteTransaction(int id) throws TransactionNotFoundException {
-        Transaction transaction = transactionRepository.findById(id).orElse(null);
-        if (transaction == null) {
-            throw new TransactionNotFoundException("Transaction with ID " + id + " not found");
-        }
-        transactionRepository.deleteById(id);
-        return "Transaction with ID " + id + " deleted";
-    }
 
     @Override
     public List<ResponseTransactionDTO> getAllTransactions() {
