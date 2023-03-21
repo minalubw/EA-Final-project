@@ -15,4 +15,6 @@ public interface BadgeRepository extends JpaRepository<Badge,Integer> {
     Optional<Badge> getBadgeByBadgeNumber( int badgeNumber);
 
 
+
+
 }

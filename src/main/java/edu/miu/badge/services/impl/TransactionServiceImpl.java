@@ -1,8 +1,11 @@
 package edu.miu.badge.services.impl;
 
-import edu.miu.badge.domains.Transaction;
-import edu.miu.badge.dto.TransactionDTO;
+import edu.miu.badge.domains.*;
+import edu.miu.badge.dto.RequestTransactionDTO;
+import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.exceptions.TransactionNotFoundException;
+import edu.miu.badge.repositories.BadgeRepository;
+import edu.miu.badge.repositories.LocationRepository;
 import edu.miu.badge.repositories.TransactionRepository;
 import edu.miu.badge.services.TransactionService;
 import org.modelmapper.ModelMapper;
@@ -10,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,42 +25,80 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
     @Autowired
-    ModelMapper modelMapper;
-    @Override
-    public TransactionDTO createTransaction(TransactionDTO transaction) {
-        Transaction convertedTransaction = modelMapper.map(transaction, Transaction.class);
-        //create Audit like an event
+    private BadgeRepository badgeRepository;
 
-        return modelMapper.map(transactionRepository.save(convertedTransaction), TransactionDTO.class);
+    @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Override
+    public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws Exception {
+        Optional<Badge> badgeOptional = badgeRepository.getBadgeByBadgeNumber(requestTransactionDTO.getBadgeId());
+        if (badgeOptional.isPresent()) {
+            Member member = badgeOptional.get().getMember();
+            List<Membership> memberships = member.getMemberships();
+            Membership msToBeUSed = null;
+            Plan planToBeUsed = null;
+            boolean flag = false;
+            for (Membership ms : memberships) {
+                if (ms.getPlan().getId() == requestTransactionDTO.getPlanId()) {
+                    flag = true;
+                    msToBeUSed = ms;
+                    break;
+                }
+            }
+            if (!flag) {
+                throw new TransactionNotFoundException("You are not allowed to use this service!");
+            }
+
+            // Is Membership is expired or not.
+            boolean isExpiredMemberShip = LocalDateTime.now().isAfter(msToBeUSed.getEndDate().atStartOfDay()) &&
+                    LocalDateTime.now().isBefore(msToBeUSed.getStartDate().atStartOfDay());
+
+            planToBeUsed = msToBeUSed.getPlan();
+            List<Location> locations = planToBeUsed.getLocations();
+
+        }
+        // Check the member is attended in the right time slot or not
+        Location location = locationRepository.findById(requestTransactionDTO.getLocationId().longValue())
+                .orElseThrow(() -> {
+                    return new Exception("Location cannot find.");
+                });
+        boolean isCorrectTimeSlot = location.getTimeSlots().stream()
+                .anyMatch(timeSlot -> LocalDateTime.now().isBefore(timeSlot.getStartTime()) && LocalDateTime.now().isAfter(timeSlot.getEndTime())
+                        && !LocalDateTime.now().getDayOfWeek().toString().equals(timeSlot.getDay().toString()));
+
+        return null;
     }
 
     @Override
-    public TransactionDTO getTransaction(int id)throws TransactionNotFoundException {
+    public ResponseTransactionDTO getTransaction(int id) throws TransactionNotFoundException {
         Transaction transaction = transactionRepository.findById(id).orElse(null);
-        if(transaction == null){
+        if (transaction == null) {
             throw new TransactionNotFoundException("Transaction with ID " + id + " not found");
         }
-        return modelMapper.map(transaction, TransactionDTO.class);
+        return modelMapper.map(transaction, ResponseTransactionDTO.class);
     }
 
     @Override
-    public TransactionDTO updateTransaction(int transactionId,TransactionDTO transaction)throws TransactionNotFoundException {
+    public ResponseTransactionDTO updateTransaction(int transactionId, ResponseTransactionDTO transaction) throws TransactionNotFoundException {
         Transaction transactionToBeUpdated = transactionRepository.findById(transactionId).orElse(null);
-        if (transactionToBeUpdated == null){
+        if (transactionToBeUpdated == null) {
             throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found");
         }
         transactionToBeUpdated.setDate(transaction.getDate());
-        transactionToBeUpdated.setMember(transaction.getMember());
-        transactionToBeUpdated.setMembership(transaction.getMembership());
-        transactionToBeUpdated.setLocation(transaction.getLocation());
+        transactionToBeUpdated.setMember(modelMapper.map(transaction.getMember(), Member.class));
+        transactionToBeUpdated.setMembership(modelMapper.map(transaction.getMembership(), Membership.class));
+        transactionToBeUpdated.setLocation(modelMapper.map(transaction.getLocation(), Location.class));
         transactionToBeUpdated.setType(transaction.getType());
-        return modelMapper.map(transactionRepository.save(transactionToBeUpdated), TransactionDTO.class) ;
+        return modelMapper.map(transactionRepository.save(transactionToBeUpdated), ResponseTransactionDTO.class);
     }
 
     @Override
-    public String deleteTransaction(int id)throws TransactionNotFoundException {
+    public String deleteTransaction(int id) throws TransactionNotFoundException {
         Transaction transaction = transactionRepository.findById(id).orElse(null);
-        if(transaction == null){
+        if (transaction == null) {
             throw new TransactionNotFoundException("Transaction with ID " + id + " not found");
         }
         transactionRepository.deleteById(id);
@@ -64,12 +106,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> getAllTransactions() {
+    public List<ResponseTransactionDTO> getAllTransactions() {
         List<Transaction> transactions = transactionRepository.findAll();
-        List<TransactionDTO> transactionDTOS = new ArrayList<>();
-        for (Transaction transaction: transactions) {
-            transactionDTOS.add(modelMapper.map(transaction, TransactionDTO.class));
+        List<ResponseTransactionDTO> responseTransactionDTOS = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            responseTransactionDTOS.add(modelMapper.map(transaction, ResponseTransactionDTO.class));
         }
-        return transactionDTOS;
+        return responseTransactionDTOS;
     }
 }

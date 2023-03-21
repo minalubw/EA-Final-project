@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Setter @Getter @AllArgsConstructor
-@NoArgsConstructor @ToString
+@NoArgsConstructor
 public class LocationDTO {
     private Long locationId;
     private String locationName;

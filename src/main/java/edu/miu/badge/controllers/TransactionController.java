@@ -1,7 +1,7 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.domains.Transaction;
-import edu.miu.badge.dto.TransactionDTO;
+import edu.miu.badge.dto.RequestTransactionDTO;
+import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.exceptions.TransactionNotFoundException;
 import edu.miu.badge.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +17,23 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping("/transactions")
-    public ResponseEntity<?> createTransaction(@RequestBody TransactionDTO transaction){
-        return new ResponseEntity<String>(transactionService.createTransaction(transaction).toString(), HttpStatus.OK);
+    public ResponseEntity<?> createTransaction(@RequestBody RequestTransactionDTO requestTransactionDTO){
+        return new ResponseEntity<>(transactionService.createTransactiony(requestTransactionDTO), HttpStatus.OK);
     }
     @GetMapping("/transactions/{id}")
     public ResponseEntity<?> getTransaction(@PathVariable int id){
         try{
-            TransactionDTO transaction = transactionService.getTransaction(id);
-            return new ResponseEntity<TransactionDTO>(transaction, HttpStatus.OK);
+            ResponseTransactionDTO transaction = transactionService.getTransaction(id);
+            return new ResponseEntity<>(transaction, HttpStatus.OK);
         }catch (TransactionNotFoundException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
     @PutMapping("/transactions/{id}")
-    public ResponseEntity<?> updateTransaction(@PathVariable int id, @RequestBody TransactionDTO transaction){
+    public ResponseEntity<?> updateTransaction(@PathVariable int id, @RequestBody ResponseTransactionDTO transaction){
         try {
-            TransactionDTO updatedTransaction = transactionService.updateTransaction(id, transaction);
-            return new ResponseEntity<TransactionDTO> (updatedTransaction, HttpStatus.OK);
+            ResponseTransactionDTO updatedTransaction = transactionService.updateTransaction(id, transaction);
+            return new ResponseEntity<ResponseTransactionDTO> (updatedTransaction, HttpStatus.OK);
         }catch (TransactionNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -49,7 +49,7 @@ public class TransactionController {
 
     }
     @GetMapping("/transactions")
-    public List<TransactionDTO> getAllTransactions(){
+    public List<ResponseTransactionDTO> getAllTransactions(){
         return transactionService.getAllTransactions();
     }
 

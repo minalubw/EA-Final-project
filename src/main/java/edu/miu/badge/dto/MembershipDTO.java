@@ -3,13 +3,12 @@ package edu.miu.badge.dto;
 import edu.miu.badge.domains.Member;
 import edu.miu.badge.domains.Plan;
 import edu.miu.badge.domains.PlanType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MembershipDTO {

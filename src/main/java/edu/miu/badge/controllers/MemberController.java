@@ -1,10 +1,9 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.domains.HttpResponse;
 import edu.miu.badge.dto.ResponseBadgeDTO;
 import edu.miu.badge.dto.RequestMemberDTO;
 import edu.miu.badge.dto.ResponseMemberDTO;
-import edu.miu.badge.dto.TransactionDTO;
+import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MemberService;
@@ -58,7 +57,7 @@ public class MemberController {
     @GetMapping("/{id}/transactions")                                           // get all transactions of a member
     public ResponseEntity<?> getMemberTransactions(@PathVariable int id){
         try {
-            return new ResponseEntity<List<TransactionDTO>>(memberService.getMemberTransactions(id), HttpStatus.OK);
+            return new ResponseEntity<List<ResponseTransactionDTO>>(memberService.getMemberTransactions(id), HttpStatus.OK);
         }catch (MemberNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
