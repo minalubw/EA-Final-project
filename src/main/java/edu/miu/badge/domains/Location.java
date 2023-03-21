@@ -14,11 +14,15 @@ import lombok.ToString;
  *
  * @author Daniel Tsegay Meresie
  */
-@Entity @Table(name = "locations")
-@Setter @Getter @AllArgsConstructor
+@Entity
+@Table(name = "locations")
+@Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 
 public class Location {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationId;

@@ -73,8 +73,26 @@ public class BadgeServiceImpl implements BadgeService {
         Optional<Badge> badgeToUpdate = badgeRepository.findById(id);
         if (badgeToUpdate.isEmpty())
             throw new BadgeNotFoundException("Badge with ID " + id + " not found");
-        badgeToUpdate.get().setBadgeStatus(badge.getBadgeStatus());
-        return modelMapper.map(badgeRepository.save(badgeToUpdate.get()), ResponseBadgeDTO.class);
+        if(badge.getMemberId() != badgeToUpdate.get().getMember().getId())
+            throw new BadgeNotFoundException("Member with ID " + badge.getMemberId() + " not found");
+        if(badge.getBadgeStatus().equals(BadgeStatus.ACTIVE)){
+            Optional<Badge> badgeToInactivate = badgeRepository.getActiveBadge(badge.getMemberId());
+            List<Badge> badges = badgeRepository.findAll();
+            for(Badge b: badges){
+                b.setBadgeStatus(BadgeStatus.INACTIVE);
+            }
+            badgeRepository.saveAll(badges);
+            Badge newStatus = badgeRepository.findById(id).get();
+            newStatus.setBadgeStatus(BadgeStatus.ACTIVE);
+            badgeRepository.save(newStatus);
+            return modelMapper.map(newStatus, ResponseBadgeDTO.class);
+        }
+        else{
+            Badge newStatus = badgeRepository.findById(id).get();
+            newStatus.setBadgeStatus(BadgeStatus.INACTIVE);
+            badgeRepository.save(newStatus);
+            return modelMapper.map(newStatus, ResponseBadgeDTO.class);
+        }
     }
 
     @Override
@@ -91,9 +109,11 @@ public class BadgeServiceImpl implements BadgeService {
 
     @Override
     public List<ResponseBadgeDTO> getAllBadges() {
-        List<Badge> badges = badgeRepository.findAll();
+        Optional<List<Badge>> badges = badgeRepository.getActiveBadges();
+        if (badges.isEmpty())
+            throw new BadgeNotFoundException("No active badges found");
         List<ResponseBadgeDTO> responseBadgeDTOS = new ArrayList<>();
-        for (Badge badge : badges) {
+        for (Badge badge : badges.get()) {
             responseBadgeDTOS.add(modelMapper.map(badge, ResponseBadgeDTO.class));
         }
         return responseBadgeDTOS;

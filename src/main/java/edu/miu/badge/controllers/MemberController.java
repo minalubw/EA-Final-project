@@ -64,9 +64,9 @@ public class MemberController {
     }
 
     @GetMapping("/{id}/memberships")
-    public ResponseEntity<?> getMembershipsByMemberId(@PathVariable int id) {
+    public ResponseEntity<?> getMembershipsByMemberId(@PathVariable int id, @RequestParam(name = "planType", required = false) String planType) {
         try {
-            return new ResponseEntity<>(membershipService.getMembershipsByMemberId(id), HttpStatus.OK);
+            return new ResponseEntity<>(membershipService.getMembershipsByMemberId(id, planType), HttpStatus.OK);
         } catch (MemberNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

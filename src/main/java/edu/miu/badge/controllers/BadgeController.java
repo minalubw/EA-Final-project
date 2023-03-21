@@ -42,7 +42,7 @@ public class BadgeController {
         }
     }
 
-    @PutMapping("/badges/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateBadge(@PathVariable int id, @RequestBody RequestBadgeDTO badge) {           // update a badge
         try {
             ResponseBadgeDTO updatedBadge = badgeService.updateBadge(id, badge);

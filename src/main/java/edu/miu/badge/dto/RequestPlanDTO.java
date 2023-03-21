@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Data
 @NoArgsConstructor
-public class PlanDTO {
-    private Integer id;
+public class RequestPlanDTO {
     private String name;
     private String description;
-    private List<PlanType> planTypes;
-    private List<Location> locations;
-    private List<Role> allowedRoles;
+    private List<Integer> planTypesId;
+    private List<Long> locationsId;
+    private List<Integer> allowedRolesId;
 }

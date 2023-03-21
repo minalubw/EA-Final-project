@@ -32,7 +32,7 @@ public class LocationServiceImpl implements LocationService {
     private ModelMapper modelMapper;
 
     @Override
-    public LocationDTO createLocation(LocationDTO locationDTO) {
+    public Location createLocation(LocationDTO locationDTO) {
         Location location = new Location();
         location.setLocationId(null);
         location.setLocationName(locationDTO.getLocationName());
@@ -40,28 +40,22 @@ public class LocationServiceImpl implements LocationService {
         location.setCapacity(locationDTO.getCapacity());
         location.setLocationType(locationDTO.getLocationType());
         location.setTimeSlots(new ArrayList<TimeSlot>());
-        if (locationDTO.getTimeslots() != null) {
-            for (TimeSlotDTO timeSlotDTO : locationDTO.getTimeslots()) {
-                location.getTimeSlots().add(timeSlotService.createTimeSlot(timeSlotDTO));
-            }
-        }
-        return modelMapper.map(locationRepository.save(location),LocationDTO.class);
+        return locationRepository.save(location);
     }
 
     @Override
-    public LocationDTO getLocationById(Long id) {
-        return modelMapper.map(locationRepository.findById(id).get(),LocationDTO.class) ;
+    public Location getLocationById(Long id) {
+        return locationRepository.findById(id).get();
     }
 
     @Override
-    public LocationDTO updateLocation(Long id, LocationDTO locationDTO) {
+    public Location updateLocation(Long id, LocationDTO locationDTO) {
         Location old = locationRepository.findById(id).get();
         old.setLocationName(locationDTO.getLocationName());
         old.setDescription(locationDTO.getDescription());
         old.setCapacity(locationDTO.getCapacity());
         old.setLocationType(locationDTO.getLocationType());
-        //old.setTimeSlots(new ArrayList<TimeSlot>());
-        return modelMapper.map(locationRepository.save(old),LocationDTO.class);
+        return locationRepository.save(old);
     }
 
     @Override
@@ -70,13 +64,8 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<LocationDTO> getAllLocations() {
-        List <Location> locations = locationRepository.findAll();
-        List<LocationDTO> locationDTOs = new ArrayList<>();
-        for (Location location : locations) {
-            locationDTOs.add(modelMapper.map(location, LocationDTO.class));
-        }
-        return locationDTOs;
+    public List<Location> getAllLocations() {
+        return locationRepository.findAll();
     }
 
 }

@@ -1,6 +1,7 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.dto.PlanDTO;
+import edu.miu.badge.dto.RequestPlanDTO;
+import edu.miu.badge.dto.ResponsePlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,14 @@ public class PlanController {
         return new ResponseEntity<>(planService.getAllPlans(), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<?> addPlan(@RequestBody PlanDTO planDTO){
-        return new ResponseEntity<>(planService.createPlan(planDTO), HttpStatus.OK);
+    public ResponseEntity<?> addPlan(@RequestBody RequestPlanDTO requestPlanDTO){
+        return new ResponseEntity<>(planService.createPlan(requestPlanDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{planid}")
-    public ResponseEntity<?> updatePlan(@PathVariable("planid") Integer id, @RequestBody PlanDTO planDTO){
+    public ResponseEntity<?> updatePlan(@PathVariable("planid") Integer id, @RequestBody RequestPlanDTO requestPlanDTO){
         try {
-            return new ResponseEntity<>(planService.updatePlan(id, planDTO), HttpStatus.OK);
+            return new ResponseEntity<>(planService.updatePlan(id, requestPlanDTO), HttpStatus.OK);
         }catch (PlanNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -48,7 +49,7 @@ public class PlanController {
     @GetMapping("/{planid}/locations")
     public ResponseEntity<?> getAllLocationsForPlan(@PathVariable("planid") Integer id){
         try {
-            return new ResponseEntity<>(planService.getLocationsForPlan(id), HttpStatus.OK);
+            return new ResponseEntity<>(planService.getAllLocationsForPlan(id), HttpStatus.OK);
         }catch (PlanNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
