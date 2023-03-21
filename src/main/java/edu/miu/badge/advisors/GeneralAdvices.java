@@ -2,6 +2,7 @@ package edu.miu.badge.advisors;
 
 import edu.miu.badge.exceptions.LocationNotFoundException;
 import edu.miu.badge.exceptions.TimeSlotNotFoundException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -31,5 +32,14 @@ public class GeneralAdvices {
         errorMap.put("errorMessage", e.getMessage());
         return errorMap;
     }
+    
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public Map<String, String> unableTodelete(SQLIntegrityConstraintViolationException e) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", e.getMessage());
+        return errorMap;
+    }
+    
     
 }
