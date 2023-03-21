@@ -38,7 +38,7 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
     
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<?> getAllLocations(){
         return new ResponseEntity<List<LocationDTO>>(locationService.getAllLocations(), HttpStatus.OK);
     }
@@ -48,7 +48,7 @@ public class LocationController {
         return locationService.getLocationById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public LocationDTO add(@RequestBody LocationDTO locationDTO){
         return locationService.createLocation(locationDTO);
     }

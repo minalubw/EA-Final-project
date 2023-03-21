@@ -23,19 +23,23 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Daniel Tsegay Meresie
  */
 @RestController
-@RequestMapping("/timeslot")
+@RequestMapping("/timeslots")
 public class TimeSlotController {
     @Autowired
     private ModelMapper mm;
     @Autowired
     private TimeSlotService timeSlotService;
     
-    @GetMapping("/all")
+    @GetMapping()
     public List<TimeSlot> getAllTimeslots(){
         return timeSlotService.getAllTimeSlots();
     }
+    @GetMapping("/{id}")
+    public TimeSlot getById(@PathVariable Long id){
+        return timeSlotService.getTimeSlotById(id);
+    }
     
-    @PostMapping("/")
+    @PostMapping()
     public TimeSlot add(@RequestBody TimeSlotDTO tsDTO){
         return timeSlotService.createTimeSlot(tsDTO);
     }
