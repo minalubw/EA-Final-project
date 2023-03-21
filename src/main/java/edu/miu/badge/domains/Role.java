@@ -18,6 +18,7 @@ public class Role {
     @GeneratedValue
     private int id;
     @Enumerated(EnumType.STRING)
+    @Column(unique = true, nullable = false)
     private RoleType roleType;
     @JsonBackReference
     @ManyToMany(mappedBy = "roles")

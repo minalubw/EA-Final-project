@@ -9,6 +9,7 @@ import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.TimeSlotDTO;
 import edu.miu.badge.enumeration.LocationType;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.LocationService;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.miu.badge.repositories.LocationRepository;
+
 /**
  *
  * @author Daniel Tsegay Meresie
@@ -34,40 +37,60 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/locations")
 public class LocationController {
-    
+
     @Autowired
     private LocationService locationService;
-    
-    @GetMapping
-    public ResponseEntity<?> getAllLocations(){
-        return new ResponseEntity<List<LocationDTO>>(locationService.getAllLocations(), HttpStatus.OK);
+
+    @Autowired
+    private TimeSlotService timeSlotService;
+
+    @Autowired
+    private LocationRepository locationRepository;
+
+    @GetMapping()
+    public List<Location> getAllLocations() {
+        return locationService.getAllLocations();
     }
 
     @GetMapping("/{id}")
-    public LocationDTO getLocationById(@PathVariable Long id){
-        return locationService.getLocationById(id);
+    public Location getLocationById(@PathVariable Long id) {
+            return locationService.getLocationById(id);
     }
 
-    @PostMapping
-    public LocationDTO add(@RequestBody LocationDTO locationDTO){
+    @PostMapping()
+    public Location add(@RequestBody LocationDTO locationDTO) {
         return locationService.createLocation(locationDTO);
     }
-//    @GetMapping("/test")// this is just for testing...
-//    public String testt(){
-//        List<TimeSlotDTO> tsdto = new ArrayList();
-//        tsdto.add(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
-//        tsdto.add(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(20)));
-//        LocationDTO ldto = new LocationDTO("gym hall", "this is gym", 90, LocationType.GYMNASIUM, tsdto);
-//        locationService.createLocation(ldto);
-//        return "time slot added for test";
-//    }
+
+    @GetMapping("/test")// this is just for testing...
+    public String testt() {
+        LocationDTO l = new LocationDTO(null, "gym", "this is a gym", 10, LocationType.DORMITORY);
+        locationService.createLocation(l);
+        return "a generic location has been added";
+    }
+
     @PutMapping("/{id}")
-    public LocationDTO update(@PathVariable Long id, @RequestBody LocationDTO locationDTO){
+    public Location update(@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
         return locationService.updateLocation(id, locationDTO);
     }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         locationService.deleteLocation(id);
     }
-}
 
+    @GetMapping("/{id}/timeslots")
+    public List<TimeSlot> getTimeSlots(@PathVariable Long id) {
+        return locationService.getLocationById(id).getTimeSlots();
+    }
+
+    @PostMapping("/{id}/timeslots")
+    public List<TimeSlot> getTimeSlots(@PathVariable Long id, @RequestBody List<TimeSlotDTO> timeSlotDTOs) {
+        Location l = locationService.getLocationById(id);
+        for (TimeSlotDTO tsdto : timeSlotDTOs) {
+            l.getTimeSlots().add(timeSlotService.createTimeSlot(tsdto));
+        }
+        return locationRepository.save(l).getTimeSlots();
+    }
+
+}

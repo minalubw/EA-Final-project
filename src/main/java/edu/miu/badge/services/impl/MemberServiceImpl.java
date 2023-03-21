@@ -8,7 +8,6 @@ import edu.miu.badge.dto.ResponseBadgeDTO;
 import edu.miu.badge.dto.RequestMemberDTO;
 import edu.miu.badge.dto.ResponseMemberDTO;
 import edu.miu.badge.dto.TransactionDTO;
-import edu.miu.badge.exceptions.MemberNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
 import edu.miu.badge.repositories.RoleRepository;
@@ -33,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private RoleRepository roleRepository;
     @Override
-    public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO) {
+    public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO) throws ResourceNotFoundException{
         List<Role> role = new ArrayList<>();
         for(Integer roleId: requestMemberDTO.getRoles()){
             Optional<Role> role1 = roleRepository.findById(roleId);
@@ -49,22 +48,22 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseMemberDTO getMemberById(int id) {
+    public ResponseMemberDTO getMemberById(int id) throws ResourceNotFoundException{
         Optional<Member> member = memberRepository.findById(id);
         if(member.isPresent()){
             return modelMapper.map(member.get(), ResponseMemberDTO.class);
         }
-        throw new MemberNotFoundException("Member with id " + id + " not found");
+        throw new ResourceNotFoundException("Member with id " + id + " not found");
     }
 
     @Override
-    public String deleteMemberById(int id) {
+    public String deleteMemberById(int id) throws ResourceNotFoundException{
         Optional<Member> member = memberRepository.findById(id);
         if(member.isPresent()){
             memberRepository.delete(member.get());
             return "Member with id " + id + " deleted successfully";
         }
-        throw new MemberNotFoundException("Member with id " + id + " not found");
+        throw new ResourceNotFoundException("Member with id " + id + " not found");
     }
     @Override
     public List<ResponseBadgeDTO> getMemberBadges(int id) {
@@ -86,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
         return transactionDTOs;
     }
     @Override
-    public ResponseMemberDTO updateMember(int id, RequestMemberDTO requestMemberDTO) {
+    public ResponseMemberDTO updateMember(int id, RequestMemberDTO requestMemberDTO) throws ResourceNotFoundException{
         Optional<Member> memberOptional = memberRepository.findById(id);
         if(memberOptional.isPresent()){
             Member toBeUpdated = memberOptional.get();

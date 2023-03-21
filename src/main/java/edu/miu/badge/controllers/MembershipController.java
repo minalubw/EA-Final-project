@@ -1,6 +1,6 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.dto.MembershipDTO;
+import edu.miu.badge.dto.RequestMembershipDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,15 @@ public class MembershipController {
         }
     }
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody MembershipDTO membershipDTO){
-        return new ResponseEntity<>(membershipService.create(membershipDTO), HttpStatus.OK);
+    public ResponseEntity<?> create(@RequestBody RequestMembershipDTO membershipDTO){
+        try {
+            return new ResponseEntity<>(membershipService.create(membershipDTO), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
     @PutMapping("/{membershipId}")
-    public ResponseEntity<?> update(@PathVariable int membershipId, @RequestBody MembershipDTO membershipDTO){
+    public ResponseEntity<?> update(@PathVariable int membershipId, @RequestBody RequestMembershipDTO membershipDTO){
         try {
             return new ResponseEntity<>(membershipService.update(membershipId, membershipDTO), HttpStatus.OK);
         }catch (ResourceNotFoundException e){
