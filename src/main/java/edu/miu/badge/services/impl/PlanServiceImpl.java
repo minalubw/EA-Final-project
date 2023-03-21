@@ -3,9 +3,7 @@ package edu.miu.badge.services.impl;
 import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.RequestPlanDTO;
-import edu.miu.badge.dto.ResponseMemberDTO;
 import edu.miu.badge.dto.ResponsePlanDTO;
-import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.LocationRepository;
 import edu.miu.badge.repositories.PlanRepository;
@@ -60,7 +58,7 @@ public class PlanServiceImpl implements PlanService {
             return modelMapper.map(planRepository.save(toBeUpdated), ResponsePlanDTO.class);
         }
         else{
-            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+            throw new ResourceNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
 
@@ -72,7 +70,7 @@ public class PlanServiceImpl implements PlanService {
            return "Plan with id " + id + " deleted!";
         }
         else{
-            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+            throw new ResourceNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
 
@@ -93,7 +91,7 @@ public class PlanServiceImpl implements PlanService {
             }
             return locationDTOS;
         }else {
-            throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
+            throw new ResourceNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
 

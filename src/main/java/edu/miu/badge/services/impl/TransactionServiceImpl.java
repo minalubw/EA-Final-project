@@ -2,7 +2,7 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Transaction;
 import edu.miu.badge.dto.TransactionDTO;
-import edu.miu.badge.exceptions.TransactionNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.TransactionRepository;
 import edu.miu.badge.services.TransactionService;
 import org.modelmapper.ModelMapper;
@@ -30,19 +30,19 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionDTO getTransaction(int id)throws TransactionNotFoundException {
+    public TransactionDTO getTransaction(int id)throws ResourceNotFoundException {
         Transaction transaction = transactionRepository.findById(id).orElse(null);
         if(transaction == null){
-            throw new TransactionNotFoundException("Transaction with ID " + id + " not found");
+            throw new ResourceNotFoundException("Transaction with ID " + id + " not found");
         }
         return modelMapper.map(transaction, TransactionDTO.class);
     }
 
     @Override
-    public TransactionDTO updateTransaction(int transactionId,TransactionDTO transaction)throws TransactionNotFoundException {
+    public TransactionDTO updateTransaction(int transactionId,TransactionDTO transaction)throws ResourceNotFoundException {
         Transaction transactionToBeUpdated = transactionRepository.findById(transactionId).orElse(null);
         if (transactionToBeUpdated == null){
-            throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found");
+            throw new ResourceNotFoundException("Transaction with ID " + transactionId + " not found");
         }
         transactionToBeUpdated.setDate(transaction.getDate());
         transactionToBeUpdated.setMember(transaction.getMember());
@@ -53,10 +53,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public String deleteTransaction(int id)throws TransactionNotFoundException {
+    public String deleteTransaction(int id)throws ResourceNotFoundException {
         Transaction transaction = transactionRepository.findById(id).orElse(null);
         if(transaction == null){
-            throw new TransactionNotFoundException("Transaction with ID " + id + " not found");
+            throw new ResourceNotFoundException("Transaction with ID " + id + " not found");
         }
         transactionRepository.deleteById(id);
         return "Transaction with ID " + id + " deleted";

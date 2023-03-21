@@ -1,8 +1,6 @@
 package edu.miu.badge.controllers;
 
 import edu.miu.badge.dto.RequestPlanDTO;
-import edu.miu.badge.dto.ResponsePlanDTO;
-import edu.miu.badge.exceptions.PlanNotFoundException;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +40,7 @@ public class PlanController {
     public ResponseEntity<?> updatePlan(@PathVariable("planid") Integer id, @RequestBody RequestPlanDTO requestPlanDTO){
         try {
             return new ResponseEntity<>(planService.updatePlan(id, requestPlanDTO), HttpStatus.OK);
-        }catch (PlanNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -51,7 +49,7 @@ public class PlanController {
     public ResponseEntity<?> updatePlan(@PathVariable("planid") Integer id){
         try {
             return new ResponseEntity<>(planService.deletePlan(id), HttpStatus.OK);
-        }catch (PlanNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -59,7 +57,7 @@ public class PlanController {
     public ResponseEntity<?> getAllLocationsForPlan(@PathVariable("planid") Integer id){
         try {
             return new ResponseEntity<>(planService.getAllLocationsForPlan(id), HttpStatus.OK);
-        }catch (PlanNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }

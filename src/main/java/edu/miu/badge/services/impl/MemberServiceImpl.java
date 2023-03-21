@@ -92,6 +92,14 @@ public class MemberServiceImpl implements MemberService {
             toBeUpdated.setFirstName(requestMemberDTO.getFirstName());
             toBeUpdated.setLastName(requestMemberDTO.getLastName());
             toBeUpdated.setEmail(requestMemberDTO.getEmail());
+            toBeUpdated.setRoles(requestMemberDTO.getRoles().stream().map(roleId -> {
+                Optional<Role> role = roleRepository.findById(roleId);
+                if(role.isPresent()){
+                    return role.get();
+                }else{
+                    throw new ResourceNotFoundException("Role with id " + roleId + " not found");
+                }
+            }).collect(Collectors.toList()));
             return modelMapper.map(memberRepository.save(toBeUpdated), ResponseMemberDTO.class);
         }else {
             throw new ResourceNotFoundException("Member with id " + id + " doesn't exists");
