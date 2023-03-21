@@ -1,10 +1,10 @@
 package edu.miu.badge.controllers;
 
+import edu.miu.badge.domains.HttpResponse;
 import edu.miu.badge.dto.ResponseBadgeDTO;
 import edu.miu.badge.dto.RequestMemberDTO;
 import edu.miu.badge.dto.ResponseMemberDTO;
-import edu.miu.badge.dto.ResponseTransactionDTO;
-import edu.miu.badge.exceptions.MemberNotFoundException;
+import edu.miu.badge.dto.TransactionDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MemberService;
 import edu.miu.badge.services.MembershipService;
@@ -24,15 +24,20 @@ public class MemberController {
     private MembershipService membershipService;
 
     @PostMapping
-    public ResponseEntity<ResponseMemberDTO> createMember(@RequestBody RequestMemberDTO requestMemberDTO){
-        return new ResponseEntity<ResponseMemberDTO>(memberService.insertNewMember(requestMemberDTO), HttpStatus.OK);
+    public ResponseEntity<?> createMember(@RequestBody RequestMemberDTO requestMemberDTO){
+        try {
+            return new ResponseEntity<ResponseMemberDTO>(memberService.insertNewMember(requestMemberDTO), HttpStatus.OK);
+        }
+        catch (ResourceNotFoundException e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMemberById(@PathVariable int id){
         try {
             return new ResponseEntity<ResponseMemberDTO>(memberService.getMemberById(id), HttpStatus.OK);
-        }catch (MemberNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -41,7 +46,7 @@ public class MemberController {
     public ResponseEntity<?> deleteMemberById(@PathVariable int id){
         try {
             return new ResponseEntity<String>(memberService.deleteMemberById(id), HttpStatus.OK);
-        }catch (MemberNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -49,7 +54,7 @@ public class MemberController {
     public ResponseEntity<?> getMemberBadges(@PathVariable int id){
         try {
             return new ResponseEntity<List<ResponseBadgeDTO>>(memberService.getMemberBadges(id), HttpStatus.OK);
-        }catch (MemberNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -57,8 +62,8 @@ public class MemberController {
     @GetMapping("/{id}/transactions")                                           // get all transactions of a member
     public ResponseEntity<?> getMemberTransactions(@PathVariable int id){
         try {
-            return new ResponseEntity<List<ResponseTransactionDTO>>(memberService.getMemberTransactions(id), HttpStatus.OK);
-        }catch (MemberNotFoundException e){
+            return new ResponseEntity<List<TransactionDTO>>(memberService.getMemberTransactions(id), HttpStatus.OK);
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -67,7 +72,7 @@ public class MemberController {
     public ResponseEntity<?> getMembershipsByMemberId(@PathVariable int id, @RequestParam(name = "planType", required = false) String planType) {
         try {
             return new ResponseEntity<>(membershipService.getMembershipsByMemberId(id, planType), HttpStatus.OK);
-        } catch (MemberNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }

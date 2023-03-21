@@ -9,6 +9,7 @@ import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.LocationDTO;
 import edu.miu.badge.dto.TimeSlotDTO;
 import edu.miu.badge.enumeration.LocationType;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.LocationService;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -53,7 +54,7 @@ public class LocationController {
 
     @GetMapping("/{id}")
     public Location getLocationById(@PathVariable Long id) {
-        return locationService.getLocationById(id);
+            return locationService.getLocationById(id);
     }
 
     @PostMapping()

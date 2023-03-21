@@ -43,7 +43,7 @@ public class TransactionController {
     public ResponseEntity<String> deleteTransaction(@PathVariable int id){
         try {
             return new ResponseEntity<String> (transactionService.deleteTransaction(id), HttpStatus.OK);
-        }catch (TransactionNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
