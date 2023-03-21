@@ -38,7 +38,7 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
     
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<?> getAllLocations(){
         return new ResponseEntity<List<LocationDTO>>(locationService.getAllLocations(), HttpStatus.OK);
     }
@@ -48,19 +48,20 @@ public class LocationController {
         return locationService.getLocationById(id);
     }
 
-    @PostMapping
+    @PostMapping()
     public LocationDTO add(@RequestBody LocationDTO locationDTO){
         return locationService.createLocation(locationDTO);
     }
-//    @GetMapping("/test")// this is just for testing...
-//    public String testt(){
+    @GetMapping("/test")// this is just for testing...
+    public String testt(){
 //        List<TimeSlotDTO> tsdto = new ArrayList();
 //        tsdto.add(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
 //        tsdto.add(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(20)));
-//        LocationDTO ldto = new LocationDTO("gym hall", "this is gym", 90, LocationType.GYMNASIUM, tsdto);
-//        locationService.createLocation(ldto);
-//        return "time slot added for test";
-//    }
+//        //LocationDTO ldto = new LocationDTO("gym hall", "this is gym", 90, LocationType.GYMNASIUM, tsdto);
+        LocationDTO l = new LocationDTO(null, "gym", "this is a gym", 10, LocationType.DORMITORY, null);
+        locationService.createLocation(l);
+        return "time slot added for test";
+    }
     @PutMapping("/{id}")
     public LocationDTO update(@PathVariable Long id, @RequestBody LocationDTO locationDTO){
         return locationService.updateLocation(id, locationDTO);

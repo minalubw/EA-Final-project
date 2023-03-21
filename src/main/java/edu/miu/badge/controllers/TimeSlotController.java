@@ -2,6 +2,7 @@ package edu.miu.badge.controllers;
 
 import edu.miu.badge.domains.TimeSlot;
 import edu.miu.badge.dto.TimeSlotDTO;
+import edu.miu.badge.enumeration.DayOfTheWeek;
 import edu.miu.badge.repositories.TimeSlotRepository;
 import edu.miu.badge.services.TimeSlotService;
 import java.time.LocalDateTime;
@@ -22,25 +23,29 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Daniel Tsegay Meresie
  */
 @RestController
-@RequestMapping("/timeslot")
+@RequestMapping("/timeslots")
 public class TimeSlotController {
     @Autowired
     private ModelMapper mm;
     @Autowired
     private TimeSlotService timeSlotService;
     
-    @GetMapping("/all")
+    @GetMapping()
     public List<TimeSlot> getAllTimeslots(){
         return timeSlotService.getAllTimeSlots();
     }
+    @GetMapping("/{id}")
+    public TimeSlot getById(@PathVariable Long id){
+        return timeSlotService.getTimeSlotById(id);
+    }
     
-    @PostMapping("/")
+    @PostMapping()
     public TimeSlot add(@RequestBody TimeSlotDTO tsDTO){
         return timeSlotService.createTimeSlot(tsDTO);
     }
     @GetMapping("/test")// this is just for testing...
     public String testt(){
-        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
+        timeSlotService.createTimeSlot(new TimeSlotDTO(LocalDateTime.now(), LocalDateTime.now().plusDays(10), DayOfTheWeek.FRIDAY));
         return "location added for test";
     }
     @PutMapping("/{id}")
