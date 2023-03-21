@@ -52,7 +52,7 @@ public class BadgeController {
         }
     }
 
-    @DeleteMapping("/badges/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> inactiveBadge(@PathVariable int id) {                        // inactive a badge
         try {
             return new ResponseEntity<String>(badgeService.inactiveBadge(id), HttpStatus.OK);
