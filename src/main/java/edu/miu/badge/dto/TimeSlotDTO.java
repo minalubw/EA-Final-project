@@ -2,6 +2,8 @@ package edu.miu.badge.dto;
 
 import edu.miu.badge.enumeration.DayOfTheWeek;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
