@@ -82,7 +82,7 @@ public class TransactionServiceImpl implements TransactionService {
                             && membership.getPlanType().getPlanType().toString().equals(PlanTypeEnum.LIMITED.toString())
                             && membership.getNumberOfAllowance() <= LIMITEDPLAN
                 );
-        if (isExpiredOrMemberShipPlan  && isValid) {
+        if (isExpiredOrMemberShipPlan && isCorrectTimeSlot && isValid) {
             Transaction transaction = new Transaction();
             transaction.setType(TransactionType.ALLOWED);
             transaction.setMember(badgeOptional.getMember());
