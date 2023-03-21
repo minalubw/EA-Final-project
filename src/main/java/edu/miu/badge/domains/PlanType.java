@@ -21,7 +21,7 @@ public class PlanType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private PlanTypeEnum planType;
 
 }
