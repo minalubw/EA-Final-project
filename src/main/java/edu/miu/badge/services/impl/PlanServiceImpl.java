@@ -2,10 +2,17 @@ package edu.miu.badge.services.impl;
 
 import edu.miu.badge.domains.Location;
 import edu.miu.badge.domains.Plan;
+import edu.miu.badge.domains.PlanType;
+import edu.miu.badge.domains.Role;
 import edu.miu.badge.dto.LocationDTO;
-import edu.miu.badge.dto.PlanDTO;
+import edu.miu.badge.dto.RequestPlanDTO;
+import edu.miu.badge.dto.ResponsePlanDTO;
 import edu.miu.badge.exceptions.PlanNotFoundException;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
+import edu.miu.badge.repositories.LocationRepository;
 import edu.miu.badge.repositories.PlanRepository;
+import edu.miu.badge.repositories.PlanTypeRepository;
+import edu.miu.badge.repositories.RoleRepository;
 import edu.miu.badge.services.PlanService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,28 +31,31 @@ public class PlanServiceImpl implements PlanService {
     @Autowired
     private PlanRepository planRepository;
     @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PlanTypeRepository planTypeRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
+
     @Override
-    public PlanDTO createPlan(PlanDTO planDTO) {
-        return modelMapper.map(planRepository.save(modelMapper.map(planDTO, Plan.class)), PlanDTO.class);
+    public ResponsePlanDTO getPlanById(Integer id) {
+        return modelMapper.map(planRepository.findById(id), ResponsePlanDTO.class);
     }
 
     @Override
-    public PlanDTO getPlanById(Integer id) {
-        return modelMapper.map(planRepository.findById(id), PlanDTO.class);
-    }
-
-    @Override
-    public PlanDTO updatePlan(Integer id, PlanDTO planDTO) {
+    public ResponsePlanDTO updatePlan(Integer id, RequestPlanDTO requestPlanDTO) {
         Optional<Plan> planOptional = planRepository.findById(id);
         if(planOptional.isPresent()){
             Plan toBeUpdated = planOptional.get();
-            toBeUpdated.setName(planDTO.getName());
-            toBeUpdated.setDescription(planDTO.getDescription());
-            toBeUpdated.setLocations(planDTO.getLocations());
-            toBeUpdated.setAllowedRoles(planDTO.getAllowedRoles());
-            toBeUpdated.setPlanTypes(planDTO.getPlanTypes());
-            return modelMapper.map(planRepository.save(toBeUpdated), PlanDTO.class);
+            toBeUpdated.setName(requestPlanDTO.getName());
+            toBeUpdated.setDescription(requestPlanDTO.getDescription());
+            toBeUpdated.setLocations(getLocationsForPlan(requestPlanDTO.getLocationsId()));
+            toBeUpdated.setAllowedRoles(getRolesForPlan(requestPlanDTO.getAllowedRolesId()));
+            toBeUpdated.setPlanTypes(getPlanTypesForPlan(requestPlanDTO.getPlanTypesId()));
+            return modelMapper.map(planRepository.save(toBeUpdated), ResponsePlanDTO.class);
         }
         else{
             throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
@@ -65,14 +75,14 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanDTO> getAllPlans() {
+    public List<ResponsePlanDTO> getAllPlans() {
         return planRepository.findAll().stream()
-                .map(plan -> modelMapper.map(plan, PlanDTO.class))
+                .map(plan -> modelMapper.map(plan, ResponsePlanDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<LocationDTO> getLocationsForPlan(Integer id) {
+    public List<LocationDTO> getAllLocationsForPlan(Integer id) {
         List<LocationDTO> locationDTOS = new ArrayList<>();
         Optional<Plan> planOptional = planRepository.findById(id);
         if(planOptional.isPresent()){
@@ -84,4 +94,54 @@ public class PlanServiceImpl implements PlanService {
             throw new PlanNotFoundException("Plan with an id " + id + " doesn't exist");
         }
     }
+
+    @Override
+    public ResponsePlanDTO createPlan(RequestPlanDTO requestPlanDTO) {
+        Plan plan = new Plan();
+        plan.setName(requestPlanDTO.getName());
+        plan.setDescription(requestPlanDTO.getDescription());
+        plan.setPlanTypes(getPlanTypesForPlan(requestPlanDTO.getPlanTypesId()));
+        plan.setAllowedRoles(getRolesForPlan(requestPlanDTO.getAllowedRolesId()));
+        plan.setLocations(getLocationsForPlan(requestPlanDTO.getLocationsId()));
+        return modelMapper.map(planRepository.save(plan), ResponsePlanDTO.class);
+    }
+
+    private List<Location> getLocationsForPlan(List<Long> locationIds){
+        List<Location> locations = new ArrayList<>();
+        for(Long locId: locationIds){
+            Optional<Location> locationOptional = locationRepository.findById(locId);
+            if (locationOptional.isPresent()){
+                locations.add(locationOptional.get());
+            }else {
+                throw new ResourceNotFoundException("Location with location id " + " not found");
+            }
+        }
+        return locations;
+    }
+
+    private List<Role> getRolesForPlan(List<Integer> roleIds){
+        List<Role> roles = new ArrayList<>();
+        for (Integer roleId: roleIds){
+            Optional<Role> roleOptional = roleRepository.findById(roleId);
+            if (roleOptional.isPresent()){
+                roles.add(roleOptional.get());
+            }else {
+                throw new ResourceNotFoundException("Allowed Role with id " + roleId + " not found");
+            }
+        }
+        return roles;
+    }
+    private List<PlanType> getPlanTypesForPlan(List<Integer> planTypeId){
+        List<PlanType> planTypes = new ArrayList<>();
+        for (Integer ptId: planTypeId) {
+            Optional<PlanType>  planTypeOptional= planTypeRepository.findById(ptId);
+            if(planTypeOptional.isPresent()){
+                planTypes.add(planTypeOptional.get());
+            }else {
+                throw new ResourceNotFoundException("Plan type with id " + ptId + " not found!");
+            }
+        }
+        return planTypes;
+    }
+
 }
