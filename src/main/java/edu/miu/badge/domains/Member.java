@@ -28,8 +28,8 @@ public class Member {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
     @JsonManagedReference
     private List<Badge> badges;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<Transaction> transactions;
 
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
