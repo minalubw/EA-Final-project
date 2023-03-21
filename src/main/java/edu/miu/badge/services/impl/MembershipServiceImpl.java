@@ -6,17 +6,19 @@ import edu.miu.badge.domains.Plan;
 import edu.miu.badge.domains.PlanType;
 import edu.miu.badge.dto.RequestMembershipDTO;
 import edu.miu.badge.dto.ResponseMembershipDTO;
-import edu.miu.badge.dto.PlanDTO;
+import edu.miu.badge.dto.ResponsePlanDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
 import edu.miu.badge.repositories.MembershipRepository;
 import edu.miu.badge.repositories.PlanRepository;
+import edu.miu.badge.repositories.PlanTypeRepository;
 import edu.miu.badge.services.MembershipService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +32,8 @@ public class MembershipServiceImpl implements MembershipService {
     MemberRepository memberRepository;
     @Autowired
     PlanRepository planRepository;
+    @Autowired
+    PlanTypeRepository planTypeRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -60,13 +64,14 @@ public class MembershipServiceImpl implements MembershipService {
             }
         }
         if (!validPlanTypePresent) throw new ResourceNotFoundException("Plan Type with ID " + membershipDTO.getPlanType_id() + " not valid");
-        //PlanType planType = planTypeRepository.findById(membershipDTO.getPlanType_id())
+        Optional<PlanType> planType = planTypeRepository.findById(membershipDTO.getPlanType_id());
+
         Membership membership = new Membership();
         membership.setStartDate(membershipDTO.getStartDate());
         membership.setEndDate(membershipDTO.getEndDate());
         membership.setMember(member.get());
         membership.setPlan(plan.get());
-//      membership.setPlanType(planType);
+      membership.setPlanType(planType.get());
         membership.setNumberOfAllowance(membershipDTO.getNumberOfAllowance());
         return modelMapper.map(membershipRepository.save(membership), ResponseMembershipDTO.class);
     }
@@ -88,13 +93,13 @@ public class MembershipServiceImpl implements MembershipService {
                 }
             }
             if (!validPlanTypePresent) throw new ResourceNotFoundException("Plan Type with ID " + membershipDTO.getPlanType_id() + " not valid");
-            //PlanType planType = planTypeRepository.findById(membershipDTO.getPlanType_id())
+            Optional<PlanType> planType = planTypeRepository.findById(membershipDTO.getPlanType_id());
             Membership toBeUpdated = membershipOptional.get();
             toBeUpdated.setStartDate(membershipDTO.getStartDate());
             toBeUpdated.setEndDate(membershipDTO.getEndDate());
             toBeUpdated.setMember(member.get());
             toBeUpdated.setPlan(plan.get());
-//          toBeUpdated.setPlanType(planType);
+          toBeUpdated.setPlanType(planType.get());
             toBeUpdated.setNumberOfAllowance(membershipDTO.getNumberOfAllowance());
             return modelMapper.map(membershipRepository.save(toBeUpdated), ResponseMembershipDTO.class);
         }
@@ -127,9 +132,9 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public List<PlanDTO> getAllPlansForMember(int memberId) {
+    public List<ResponsePlanDTO> getAllPlansForMember(int memberId) {
         return membershipRepository.findPlansByMemberId(memberId).stream()
-                .map(p -> modelMapper.map(p, PlanDTO.class)).collect(Collectors.toList());
+                .map(p -> modelMapper.map(p, ResponsePlanDTO.class)).collect(Collectors.toList());
     }
 
 }

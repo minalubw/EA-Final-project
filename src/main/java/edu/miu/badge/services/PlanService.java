@@ -1,15 +1,16 @@
 package edu.miu.badge.services;
 
 import edu.miu.badge.dto.LocationDTO;
-import edu.miu.badge.dto.PlanDTO;
+import edu.miu.badge.dto.RequestPlanDTO;
+import edu.miu.badge.dto.ResponsePlanDTO;
 
 import java.util.List;
 
 public interface PlanService  {
-    PlanDTO createPlan(PlanDTO planDTO);
-    PlanDTO getPlanById(Integer id);
-    PlanDTO updatePlan(Integer id, PlanDTO planDTO);
+    ResponsePlanDTO createPlan(RequestPlanDTO requestPlanDTO);
+    ResponsePlanDTO getPlanById(Integer id);
+    ResponsePlanDTO updatePlan(Integer id, RequestPlanDTO requestPlanDTO);
     String deletePlan(Integer id);
-    List<PlanDTO> getAllPlans();
-    List<LocationDTO> getLocationsForPlan(Integer id);
+    List<ResponsePlanDTO> getAllPlans();
+    List<LocationDTO> getAllLocationsForPlan(Integer id);
 }
