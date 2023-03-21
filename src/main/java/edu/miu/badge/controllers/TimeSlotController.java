@@ -48,11 +48,10 @@ public class TimeSlotController {
     }
 
     @GetMapping("/test")// this is just for testing...
-
-    public String testt(){
+    public String testt() {
         timeSlotService.createTimeSlot(new TimeSlotDTO(LocalTime.now(), LocalTime.now().plusHours(2), DayOfTheWeek.FRIDAY));
         return "location added for test";
-
+    }
 
     @PutMapping("/{id}")
     public TimeSlot update(@PathVariable Long id, @RequestBody TimeSlotDTO timeSlotDTO) {
@@ -64,3 +63,4 @@ public class TimeSlotController {
         timeSlotService.deleteTimeSlot(id);
     }
 }
+

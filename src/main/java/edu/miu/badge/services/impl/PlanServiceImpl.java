@@ -97,7 +97,9 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public ResponsePlanDTO createPlan(RequestPlanDTO requestPlanDTO) {
-        Plan plan = modelMapper.map(requestPlanDTO, Plan.class);
+        Plan plan = new Plan();
+        plan.setName(requestPlanDTO.getName());
+        plan.setDescription(requestPlanDTO.getDescription());
         plan.setPlanTypes(getPlanTypesForPlan(requestPlanDTO.getPlanTypesId()));
         plan.setAllowedRoles(getRolesForPlan(requestPlanDTO.getAllowedRolesId()));
         plan.setLocations(getLocationsForPlan(requestPlanDTO.getLocationsId()));
