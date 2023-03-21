@@ -1,5 +1,6 @@
 package edu.miu.badge.dto;
 
+import edu.miu.badge.enumeration.DayOfTheWeek;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +17,5 @@ import lombok.ToString;
 public class TimeSlotDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private  DayOfTheWeek day;
 }
