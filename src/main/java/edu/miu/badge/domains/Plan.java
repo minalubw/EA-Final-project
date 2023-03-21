@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "plan_table")
+@Table(name = "Plans")
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +21,28 @@ public class Plan {
     private String name;
     @Column(nullable = false)
     private String description;
-    @OneToMany
+    @ManyToMany
     @Column(nullable = false)
-    @JoinTable(name = "Plan_Plantypes")
+    @JoinTable(name = "Plan_Plantypes",
+            joinColumns = {@JoinColumn(name = "plan_id")},
+            inverseJoinColumns = {@JoinColumn(name = "plantype_id")}
+    )
     private List<PlanType> planTypes;
 
-    @OneToMany
-    @Column(name = "Plan_Locations", nullable = false)
+    @ManyToMany
+    @Column(nullable = false)
+    @JoinTable(name = "Plan_Locations",
+            joinColumns = {@JoinColumn(name = "plan_id")},
+            inverseJoinColumns = {@JoinColumn(name = "location_id")}
+    )
+
     private List<Location> locations;
 
-    @OneToMany
-    @JoinTable(name = "Plan_Roles")
+    @ManyToMany
+    @JoinTable(name = "Plan_Role",
+            joinColumns = {@JoinColumn(name = "plan_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
     @Column(nullable = false)
     private List<Role> allowedRoles;
 
