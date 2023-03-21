@@ -1,9 +1,14 @@
 package edu.miu.badge.repositories;
 
 import edu.miu.badge.domains.Badge;
+import edu.miu.badge.domains.Member;
+import edu.miu.badge.enumeration.BadgeStatus;
 import edu.miu.badge.exceptions.BadgeNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +23,10 @@ public interface BadgeRepository extends JpaRepository<Badge,Integer> {
     @Query("SELECT b FROM Badge b WHERE b.badgeNumber = ?1")
     Optional<Badge> getBadgeByBadgeNumber( int badgeNumber);
 
+    //inactive all badges of a member
+    @Modifying
+    @Query("update Badge b set b.badgeStatus = :status where b.member.id = :id")
+    void updateBadgeStatusOfMember(@Param("id") int id, @Param("status") BadgeStatus status);
 
 
 

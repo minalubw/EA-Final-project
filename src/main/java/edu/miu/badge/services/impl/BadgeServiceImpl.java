@@ -10,7 +10,6 @@ import edu.miu.badge.exceptions.BadgeNotFoundException;
 import edu.miu.badge.repositories.BadgeRepository;
 import edu.miu.badge.repositories.MemberRepository;
 import edu.miu.badge.services.BadgeService;
-import edu.miu.badge.services.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,19 +75,14 @@ public class BadgeServiceImpl implements BadgeService {
         if(badge.getMemberId() != badgeToUpdate.get().getMember().getId())
             throw new BadgeNotFoundException("Member with ID " + badge.getMemberId() + " not found");
         if(badge.getBadgeStatus().equals(BadgeStatus.ACTIVE)){
-            Optional<Badge> badgeToInactivate = badgeRepository.getActiveBadge(badge.getMemberId());
-            List<Badge> badges = badgeRepository.findAll();
-            for(Badge b: badges){
-                b.setBadgeStatus(BadgeStatus.INACTIVE);
-            }
-            badgeRepository.saveAll(badges);
-            Badge newStatus = badgeRepository.findById(id).get();
+            badgeRepository.updateBadgeStatusOfMember(badge.getMemberId(), BadgeStatus.INACTIVE);
+            Badge newStatus = badgeToUpdate.get();
             newStatus.setBadgeStatus(BadgeStatus.ACTIVE);
             badgeRepository.save(newStatus);
             return modelMapper.map(newStatus, ResponseBadgeDTO.class);
         }
         else{
-            Badge newStatus = badgeRepository.findById(id).get();
+            Badge newStatus = badgeToUpdate.get();
             newStatus.setBadgeStatus(BadgeStatus.INACTIVE);
             badgeRepository.save(newStatus);
             return modelMapper.map(newStatus, ResponseBadgeDTO.class);
