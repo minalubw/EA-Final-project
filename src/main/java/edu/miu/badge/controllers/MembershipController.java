@@ -1,7 +1,6 @@
 package edu.miu.badge.controllers;
 
 import edu.miu.badge.dto.RequestMembershipDTO;
-import edu.miu.badge.dto.ResponseMembershipDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;

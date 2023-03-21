@@ -14,7 +14,7 @@ public interface MembershipService {
     public ResponseMembershipDTO create(RequestMembershipDTO membershipDTO);
     public ResponseMembershipDTO update(int membershipId, RequestMembershipDTO membershipDTO);
     public String delete(int membershipId);
-    public List<ResponseMembershipDTO> getMembershipsByMemberId(int memberId);
+    public List<ResponseMembershipDTO> getMembershipsByMemberId(int memberId, String planType);
     public List<PlanDTO> getAllPlansForMember(int memberId);
 
 }

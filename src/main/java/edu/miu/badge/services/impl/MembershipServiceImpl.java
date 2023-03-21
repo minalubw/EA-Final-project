@@ -114,10 +114,16 @@ public class MembershipServiceImpl implements MembershipService {
         }
     }
 
-    public List<ResponseMembershipDTO> getMembershipsByMemberId(int memberId){
-        return membershipRepository.findMembershipsByMemberId(memberId).stream()
+    public List<ResponseMembershipDTO> getMembershipsByMemberId(int memberId, String planType){
+        List<ResponseMembershipDTO> list =  membershipRepository.findMembershipsByMemberId(memberId).stream()
                 .map(membership -> modelMapper.map(membership, ResponseMembershipDTO.class))
                 .collect(Collectors.toList());
+        if(planType.isEmpty()) {
+            return list;
+        }
+        else{
+            return list.stream().filter(l -> l.getPlanType().getPlanType().equals(planType)).collect(Collectors.toList());
+        }
     }
 
     @Override
