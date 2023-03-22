@@ -1,14 +1,19 @@
 package edu.miu.badge.security;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.miu.badge.dto.RequestUserDTO;
+import edu.miu.badge.dto.ResponseMemberDTO;
+import edu.miu.badge.dto.ResponseUserDTO;
 import edu.miu.badge.services.LoginService;
 
+import edu.miu.badge.services.MemberService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,10 +34,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private LoginService userService;
     private Environment environment;
 
-    public AuthenticationFilter(AuthenticationManager authentication, LoginService userService, Environment environment){
+    private MemberService memberService;
+
+    public AuthenticationFilter(AuthenticationManager authentication,
+                                LoginService userService,
+                                Environment environment,
+                                MemberService memberService){
         super(authentication);
         this.userService =userService;
         this.environment = environment;
+        this.memberService = memberService;
     }
 
     @Override
@@ -47,9 +58,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
     @Override
-    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,Authentication auth){
+    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,Authentication auth) throws IOException {
         String userName = ((User)auth.getPrincipal()).getUsername();
-        RequestUserDTO userDTO = userService.getUserDetailsByUsername(userName);
+        ResponseUserDTO userDTO = userService.getUserDetailsByUsername(userName);
+        ResponseMemberDTO responseMemberDTO = memberService.getMemberById(userDTO.getId());
         String tokenSecret = environment.getProperty("token.secret");
         byte[] secretKeyBytes = Base64.getEncoder().encode(tokenSecret.getBytes());
         SecretKey secretKey= new SecretKeySpec(secretKeyBytes, SignatureAlgorithm.HS512.getJcaName());
@@ -62,6 +74,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .compact();
         res.addHeader("token", token);
         res.addHeader("username", userDTO.getUsername());
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        String memberString = objectMapper.writeValueAsString(responseMemberDTO);
+        res.getWriter().write(memberString);
     }
 }
