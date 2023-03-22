@@ -25,13 +25,18 @@ public interface MembershipRepository extends JpaRepository<Membership, Integer>
     @Modifying
     @Query("UPDATE Membership m SET m.usedAllowances = 0 WHERE m.member IN" +
             " (SELECT r.member FROM Role r WHERE r.roleType =  edu.miu.badge.enumeration.RoleType.STUDENT)")
-    void updateMembershipsByStudentRole();
+    void updateMembershipsMealCountByStudentRole();
 
     @Transactional
     @Modifying
     @Query("UPDATE Membership m SET m.usedAllowances = 0 WHERE m.member IN" +
             " (SELECT r.member FROM Role r WHERE r.roleType =  edu.miu.badge.enumeration.RoleType.STAFF)")
-    void updateMembershipsByStaffRole();
+    void updateMembershipsMealCountByStaffRole();
+    @Transactional
+    @Modifying
+    @Query("UPDATE Membership m SET m.usedAllowances = 0 WHERE m.member IN" +
+            " (SELECT r.member FROM Role r WHERE r.roleType =  edu.miu.badge.enumeration.RoleType.FACULTY)")
+    void updateMembershipsMealCountByFacultyRole();
 
 
 }

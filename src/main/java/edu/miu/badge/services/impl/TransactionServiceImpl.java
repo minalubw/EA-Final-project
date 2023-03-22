@@ -164,11 +164,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Scheduled(fixedRate = 200000)
     public void resetStudentMealCount(){
-        membershipRepository.updateMembershipsByStudentRole();
+        membershipRepository.updateMembershipsMealCountByStudentRole();
     }
     @Scheduled(fixedRate = 500000)
     public void resetStaffMealCount(){
-        membershipRepository.updateMembershipsByStaffRole();
+        membershipRepository.updateMembershipsMealCountByFacultyRole();
+        membershipRepository.updateMembershipsMealCountByStaffRole();
     }
 }
 

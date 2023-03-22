@@ -156,7 +156,5 @@ public class MembershipServiceImpl implements MembershipService {
                 .map(p -> modelMapper.map(p, ResponsePlanDTO.class)).collect(Collectors.toList());
     }
 
-    public void reset(){
-        membershipRepository.updateMembershipsByStudentRole();
-    }
+
 }
