@@ -1,5 +1,6 @@
 package edu.miu.badge.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class ResponseMemberDTO {
     private String email;
     private List<RolesDTO> roles;
     private List<ResponseBadgeDTO> badges;
-    private List<ResponseMembershipDTO> memberships;
 
+    @JsonBackReference
+    public List<ResponseBadgeDTO> getBadges() {
+        return badges;
+    }
 }
