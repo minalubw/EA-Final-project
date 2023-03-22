@@ -1,9 +1,6 @@
 package edu.miu.badge.services.impl;
 
-import edu.miu.badge.domains.Badge;
-import edu.miu.badge.domains.Member;
-import edu.miu.badge.domains.Role;
-import edu.miu.badge.domains.Transaction;
+import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.ResponseBadgeDTO;
 import edu.miu.badge.dto.RequestMemberDTO;
 import edu.miu.badge.dto.ResponseMemberDTO;
@@ -11,14 +8,20 @@ import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
 import edu.miu.badge.repositories.RoleRepository;
+import edu.miu.badge.repositories.UserRepository;
 import edu.miu.badge.services.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +34,15 @@ public class MemberServiceImpl implements MemberService {
     ModelMapper modelMapper;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO) throws ResourceNotFoundException{
-        List<Role> role = new ArrayList<>();
+        Set<Role> role = new HashSet<>();
         for(Integer roleId: requestMemberDTO.getRoles()){
             Optional<Role> role1 = roleRepository.findById(roleId);
             if(role1.isPresent()){
@@ -44,7 +53,13 @@ public class MemberServiceImpl implements MemberService {
         }
         Member member = modelMapper.map(requestMemberDTO, Member.class);
         member.setRoles(role);
-        return modelMapper.map(memberRepository.save(member), ResponseMemberDTO.class);
+        Member savedMember=memberRepository.save(member);
+        User newUser = new User();
+        newUser.setUsername(requestMemberDTO.getUsername());
+        newUser.setPassword(bCryptPasswordEncoder.encode(requestMemberDTO.getPassword()));
+        newUser.setMemberId(savedMember.getId());
+        userRepository.save(newUser);
+        return modelMapper.map(savedMember, ResponseMemberDTO.class);
     }
 
     @Override
@@ -99,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
                 }else{
                     throw new ResourceNotFoundException("Role with id " + roleId + " not found");
                 }
-            }).collect(Collectors.toList()));
+            }).collect(Collectors.toSet()));
             return modelMapper.map(memberRepository.save(toBeUpdated), ResponseMemberDTO.class);
         }else {
             throw new ResourceNotFoundException("Member with id " + id + " doesn't exists");
@@ -111,6 +126,4 @@ public class MemberServiceImpl implements MemberService {
                 .map(member -> modelMapper.map(member, ResponseMemberDTO.class))
                 .collect(Collectors.toList());
     }
-
-
 }

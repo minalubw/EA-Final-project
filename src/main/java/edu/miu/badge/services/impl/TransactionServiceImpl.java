@@ -1,12 +1,16 @@
 package edu.miu.badge.services.impl;
 
+
 import edu.miu.badge.enumeration.TransactionDeclinedException;
+
+
 import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.RequestTransactionDTO;
 import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.enumeration.PlanTypeEnum;
 import edu.miu.badge.enumeration.RoleType;
 import edu.miu.badge.enumeration.TransactionType;
+import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.BadgeRepository;
 import edu.miu.badge.repositories.LocationRepository;
 import edu.miu.badge.repositories.MembershipRepository;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -49,7 +54,8 @@ public class TransactionServiceImpl implements TransactionService {
     ModelMapper modelMapper;
 
     @Override
-    public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws Exception {
+    public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws TransactionDeclinedException
+    {
         Badge badgeOptional = badgeRepository.getBadgeByBadgeNumber(requestTransactionDTO.getBadgeId())
                 .orElseThrow(() -> {
                     return new TransactionDeclinedException("You are not allowed to use this service!");
@@ -115,10 +121,6 @@ public class TransactionServiceImpl implements TransactionService {
         if (isExpiredOrMemberShipPlan && isCorrectTimeSlot && isCountValid) {
             Transaction transaction = new Transaction();
             transaction.setType(TransactionType.ALLOWED);
-            transaction.setMember(badgeOptional.getMember());
-            transaction.setMembership(memberships.stream().filter(membership -> Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId())).collect(Collectors.toList()).get(0));
-            transaction.setDate(LocalDateTime.now());
-            transaction.setLocation(location);
             return modelMapper.map(transactionRepository.save(transaction), ResponseTransactionDTO.class);
         } else {
             throw new TransactionDeclinedException("Transaction cannot be inserted");
@@ -127,10 +129,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public ResponseTransactionDTO getTransaction(int id) throws TransactionDeclinedException {
+    public ResponseTransactionDTO getTransaction(int id) throws ResourceNotFoundException {
         Transaction transaction = transactionRepository.findById(id).orElse(null);
         if (transaction == null) {
-            throw new TransactionDeclinedException("Transaction with ID " + id + " not found");
+            throw new ResourceNotFoundException("Transaction with ID " + id + " not found");
         }
         return modelMapper.map(transaction, ResponseTransactionDTO.class);
     }
