@@ -1,10 +1,7 @@
 package edu.miu.badge.repositories;
 
 
-import edu.miu.badge.domains.Badge;
-import edu.miu.badge.domains.Member;
-import edu.miu.badge.domains.Membership;
-import edu.miu.badge.domains.Transaction;
+import edu.miu.badge.domains.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,8 +21,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
         //list of Transactions of a member
         @Query("select t from Transaction t where t.member.id = ?1")
         List<Transaction> allTransactionsOfMember(int memberId);
-
-        //list of all membership of a member
 
 
 }

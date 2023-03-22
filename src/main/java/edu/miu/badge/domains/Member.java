@@ -23,10 +23,10 @@ public class Member {
     @Column(nullable = false)
     private String email;
     @ManyToMany
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<Role> roles;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<Badge> badges;
 //    @OneToMany(cascade = CascadeType.ALL)
 //    private List<Transaction> transactions;

@@ -17,4 +17,6 @@ public interface MembershipRepository extends JpaRepository<Membership, Integer>
     List<Membership> findMembershipsByMemberId(@Param("member_id") int member_id);
     @Query("select ms.plan from Membership ms where ms.member.id = :memberId")
     List<Plan> findPlansByMemberId(@PathVariable("memberId") int memberId);
+
+
 }

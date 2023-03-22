@@ -1,6 +1,7 @@
 package edu.miu.badge.controllers;
 
-import edu.miu.badge.dto.TransactionDTO;
+import edu.miu.badge.dto.RequestTransactionDTO;
+import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,39 +17,17 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping("/transactions")
-    public ResponseEntity<?> createTransaction(@RequestBody TransactionDTO transaction){
-        return new ResponseEntity<String>(transactionService.createTransaction(transaction).toString(), HttpStatus.OK);
+    public ResponseEntity<?> createTransaction(@RequestBody RequestTransactionDTO requestTransactionDTO) throws Exception {
+        return new ResponseEntity<>(transactionService.createTransaction(requestTransactionDTO), HttpStatus.OK);
     }
     @GetMapping("/transactions/{id}")
-    public ResponseEntity<?> getTransaction(@PathVariable int id){
-        try{
-            TransactionDTO transaction = transactionService.getTransaction(id);
-            return new ResponseEntity<TransactionDTO>(transaction, HttpStatus.OK);
-        }catch (ResourceNotFoundException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> getTransaction(@PathVariable int id) throws TransactionNotFoundException {
+        ResponseTransactionDTO transaction = transactionService.getTransaction(id);
+        return new ResponseEntity<>(transaction, HttpStatus.OK);
     }
-    @PutMapping("/transactions/{id}")
-    public ResponseEntity<?> updateTransaction(@PathVariable int id, @RequestBody TransactionDTO transaction){
-        try {
-            TransactionDTO updatedTransaction = transactionService.updateTransaction(id, transaction);
-            return new ResponseEntity<TransactionDTO> (updatedTransaction, HttpStatus.OK);
-        }catch (ResourceNotFoundException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
 
-    }
-    @DeleteMapping("/transactions/{id}")
-    public ResponseEntity<String> deleteTransaction(@PathVariable int id){
-        try {
-            return new ResponseEntity<String> (transactionService.deleteTransaction(id), HttpStatus.OK);
-        }catch (ResourceNotFoundException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
-    }
     @GetMapping("/transactions")
-    public List<TransactionDTO> getAllTransactions(){
+    public List<ResponseTransactionDTO> getAllTransactions(){
         return transactionService.getAllTransactions();
     }
 
