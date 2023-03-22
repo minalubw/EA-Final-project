@@ -1,7 +1,7 @@
 package edu.miu.badge.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.miu.badge.domains.Badge;
-import edu.miu.badge.domains.Member;
 import edu.miu.badge.enumeration.BadgeStatus;
 import lombok.*;
 
@@ -19,5 +19,8 @@ public class ResponseBadgeDTO implements Serializable {
     private BadgeStatus badgeStatus;
     private int badgeNumber;
     private ResponseMemberDTO member;
-
+    @JsonManagedReference
+    public ResponseMemberDTO getMember() {
+        return member;
+    }
 }

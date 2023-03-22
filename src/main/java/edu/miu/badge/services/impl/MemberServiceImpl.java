@@ -65,6 +65,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseMemberDTO getMemberById(int id) throws ResourceNotFoundException{
         Optional<Member> member = memberRepository.findById(id);
+        System.out.println("======"+member.get().getEmail());
         if(member.isPresent()){
             return modelMapper.map(member.get(), ResponseMemberDTO.class);
         }
