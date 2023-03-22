@@ -1,4 +1,4 @@
-package edu.miu.badge.controllers;
+package edu.miu.badge.exceptions;
 
 public class TransactionNotFoundException extends Exception{
 

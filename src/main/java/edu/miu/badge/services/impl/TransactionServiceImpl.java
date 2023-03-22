@@ -1,6 +1,6 @@
 package edu.miu.badge.services.impl;
 
-import edu.miu.badge.controllers.TransactionNotFoundException;
+import edu.miu.badge.exceptions.TransactionNotFoundException;
 import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.RequestTransactionDTO;
 import edu.miu.badge.dto.ResponseTransactionDTO;
@@ -14,12 +14,12 @@ import edu.miu.badge.services.TransactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
     ModelMapper modelMapper;
 
     @Override
-    public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws Exception {
+    public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws TransactionNotFoundException {
         Badge badgeOptional = badgeRepository.getBadgeByBadgeNumber(requestTransactionDTO.getBadgeId())
                 .orElseThrow(() -> {
                     return new TransactionNotFoundException("You are not allowed to use this service!");
@@ -69,7 +69,8 @@ public class TransactionServiceImpl implements TransactionService {
         // Check the member is attended in the right time slot or not
         Location location = locationRepository.findById(requestTransactionDTO.getLocationId().longValue())
                 .orElseThrow(() -> {
-                    return new Exception("Location cannot find.");
+                    return new TransactionException("Location cannot find.") {
+                    };
                 });
         boolean isCorrectTimeSlot = location.getTimeSlots().stream()
                 .anyMatch(timeSlot -> LocalTime.now().isAfter(timeSlot.getStartTime())
@@ -91,6 +92,7 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.setLocation(location);
             return modelMapper.map(transactionRepository.save(transaction), ResponseTransactionDTO.class);
         } else {
+
             throw new TransactionNotFoundException("Transaction cannot be inserted");
         }
 

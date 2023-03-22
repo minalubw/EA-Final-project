@@ -33,7 +33,6 @@ public class Member {
 //    private List<Transaction> transactions;
     @OneToOne
     private User user;
-    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     private List<Membership> memberships;
 }
