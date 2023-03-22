@@ -1,8 +1,5 @@
 package edu.miu.badge.dto;
 
-import edu.miu.badge.domains.Location;
-import edu.miu.badge.domains.PlanType;
-import edu.miu.badge.domains.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +10,7 @@ public class ResponsePlanDTO {
     private Integer id;
     private String name;
     private String description;
-    private List<PlanType> planTypes;
-    private List<Location> locations;
-    private List<Role> allowedRoles;
+    private List<PlanTypeDTO> planTypes;
+    private List<LocationDTO> locations;
+    private List<RolesDTO> allowedRoles;
 }
