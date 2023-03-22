@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner{
+
     @Autowired
     private PlanTypeRepository planTypeRepository;
     @Autowired
@@ -26,6 +27,7 @@ public class Application implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Server is running..." );
+
 
         planTypeRepository.save(new PlanType(1, PlanTypeEnum.LIMITED));
         planTypeRepository.save(new PlanType(2, PlanTypeEnum.UNLIMITED));

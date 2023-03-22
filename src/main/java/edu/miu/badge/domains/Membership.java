@@ -30,8 +30,8 @@ public class Membership {
     @ManyToOne
     @JoinColumn(name="[plan_type_id]", nullable = false)
     private PlanType planType;
-    @Column(name="[number_of_allowance]")
-    private int numberOfAllowance;
+    @Column(name="[used_allowances]")
+    private int usedAllowances;
 
     @Override
     public String toString() {
@@ -41,7 +41,7 @@ public class Membership {
                 ", endDate=" + endDate +
                 ", plan=" + plan +
                 ", planType=" + planType +
-                ", numberOfAllowance=" + numberOfAllowance +
+                ", numberOfAllowance=" + usedAllowances +
                 '}';
     }
 }

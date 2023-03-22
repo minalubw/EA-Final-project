@@ -79,8 +79,8 @@ public class MembershipServiceImpl implements MembershipService {
         membership.setEndDate(membershipDTO.getEndDate());
         membership.setMember(member.get());
         membership.setPlan(plan.get());
-      membership.setPlanType(planType.get());
-        membership.setNumberOfAllowance(membershipDTO.getNumberOfAllowance());
+        membership.setPlanType(planType.get());
+        membership.setUsedAllowances(membershipDTO.getUsedAllowances());
         return modelMapper.map(membershipRepository.save(membership), ResponseMembershipDTO.class);
     }
 
@@ -118,8 +118,8 @@ public class MembershipServiceImpl implements MembershipService {
             toBeUpdated.setEndDate(membershipDTO.getEndDate());
             toBeUpdated.setMember(member.get());
             toBeUpdated.setPlan(plan.get());
-          toBeUpdated.setPlanType(planType.get());
-            toBeUpdated.setNumberOfAllowance(membershipDTO.getNumberOfAllowance());
+            toBeUpdated.setPlanType(planType.get());
+            toBeUpdated.setUsedAllowances(membershipDTO.getUsedAllowances());
             return modelMapper.map(membershipRepository.save(toBeUpdated), ResponseMembershipDTO.class);
         }
         else{
@@ -156,4 +156,7 @@ public class MembershipServiceImpl implements MembershipService {
                 .map(p -> modelMapper.map(p, ResponsePlanDTO.class)).collect(Collectors.toList());
     }
 
+    public void reset(){
+        membershipRepository.updateMembershipsByStudentRole();
+    }
 }

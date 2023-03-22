@@ -18,5 +18,5 @@ public class ResponseMembershipDTO {
     private Member member;
     private Plan plan;
     private PlanType planType;
-    private int numberOfAllowance;
+    private int usedAllowances;
 }
