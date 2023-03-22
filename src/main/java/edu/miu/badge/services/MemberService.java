@@ -15,5 +15,4 @@ public interface MemberService {
     ResponseMemberDTO updateMember(int id, RequestMemberDTO requestMemberDTO);
     List<ResponseBadgeDTO> getMemberBadges(int id);
     List<ResponseTransactionDTO> getMemberTransactions(int id);
-
 }
