@@ -13,6 +13,4 @@ import java.util.List;
 public class RolesDTO {
     private int id;
     private String roleType;
-    @JsonIgnore
-    private List<ResponseMemberDTO> member;
 }

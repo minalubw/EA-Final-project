@@ -16,10 +16,5 @@ public class ResponseMemberDTO {
     private String lastName;
     private String email;
     private List<RolesDTO> roles;
-    private List<ResponseBadgeDTO> badges;
 
-    @JsonBackReference
-    public List<ResponseBadgeDTO> getBadges() {
-        return badges;
-    }
 }
