@@ -69,7 +69,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}/memberships")
-    public ResponseEntity<?> getMembershipsByMemberId(@PathVariable int id, @RequestParam(name = "planType", required = false) String planType) {
+    public ResponseEntity<?> getMembershipsByMemberId(@PathVariable int id, @RequestParam(name = "planType", required = false) String planType) throws ResourceNotFoundException {
         try {
             return new ResponseEntity<>(membershipService.getMembershipsByMemberId(id, planType), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
