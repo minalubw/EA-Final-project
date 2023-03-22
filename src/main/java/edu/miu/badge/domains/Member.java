@@ -24,16 +24,11 @@ public class Member {
     @Column(nullable = false)
     private String email;
     @ManyToMany
-//    @JsonManagedReference
     private Set<Role> roles;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-//    @JsonManagedReference
     private List<Badge> badges;
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Transaction> transactions;
     @OneToOne
     private User user;
-
     @OneToMany(cascade = CascadeType.ALL)
     private List<Membership> memberships;
 }
