@@ -32,4 +32,16 @@ public class Membership {
     private PlanType planType;
     @Column(name="[number_of_allowance]")
     private int numberOfAllowance;
+
+    @Override
+    public String toString() {
+        return "Membership{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", plan=" + plan +
+                ", planType=" + planType +
+                ", numberOfAllowance=" + numberOfAllowance +
+                '}';
+    }
 }

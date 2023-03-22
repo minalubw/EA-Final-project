@@ -4,7 +4,7 @@ import edu.miu.badge.domains.*;
 import edu.miu.badge.dto.ResponseBadgeDTO;
 import edu.miu.badge.dto.RequestMemberDTO;
 import edu.miu.badge.dto.ResponseMemberDTO;
-import edu.miu.badge.dto.TransactionDTO;
+import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.MemberRepository;
 import edu.miu.badge.repositories.RoleRepository;
@@ -82,13 +82,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<TransactionDTO> getMemberTransactions(int id) {
+    public List<ResponseTransactionDTO> getMemberTransactions(int id) {
         List<Transaction> transactions = memberRepository.allTransactionsOfMember(id);
-        List<TransactionDTO> transactionDTOs= new ArrayList<>();
+        List<ResponseTransactionDTO> responseTransactionDTOS = new ArrayList<>();
         for(Transaction transaction: transactions){
-            transactionDTOs.add(modelMapper.map(transaction, TransactionDTO.class));
+            responseTransactionDTOS.add(modelMapper.map(transaction, ResponseTransactionDTO.class));
         }
-        return transactionDTOs;
+        return responseTransactionDTOS;
     }
     @Override
     public ResponseMemberDTO updateMember(int id, RequestMemberDTO requestMemberDTO) throws ResourceNotFoundException{
