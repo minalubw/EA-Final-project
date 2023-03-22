@@ -15,8 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
     UserRepository userRepository;
     @Override
     public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO) throws ResourceNotFoundException{
-        List<Role> role = new ArrayList<>();
+        Set<Role> role = new HashSet<>();
         for(Integer roleId: requestMemberDTO.getRoles()){
             Optional<Role> role1 = roleRepository.findById(roleId);
             if(role1.isPresent()){
@@ -105,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
                 }else{
                     throw new ResourceNotFoundException("Role with id " + roleId + " not found");
                 }
-            }).collect(Collectors.toList()));
+            }).collect(Collectors.toSet()));
             return modelMapper.map(memberRepository.save(toBeUpdated), ResponseMemberDTO.class);
         }else {
             throw new ResourceNotFoundException("Member with id " + id + " doesn't exists");
