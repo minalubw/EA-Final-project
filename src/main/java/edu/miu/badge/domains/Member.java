@@ -30,7 +30,8 @@ public class Member {
     private List<Badge> badges;
 //    @OneToMany(cascade = CascadeType.ALL)
 //    private List<Transaction> transactions;
-
+    @OneToOne
+    private User user;
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     private List<Membership> memberships;
