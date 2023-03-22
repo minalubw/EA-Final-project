@@ -4,6 +4,7 @@ import edu.miu.badge.domains.User;
 import edu.miu.badge.dto.RequestUserDTO;
 import edu.miu.badge.dto.ResponseMemberDTO;
 
+import edu.miu.badge.dto.ResponseUserDTO;
 import edu.miu.badge.repositories.MemberRepository;
 import edu.miu.badge.repositories.UserRepository;
 import edu.miu.badge.services.LoginService;
@@ -43,10 +44,10 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public RequestUserDTO getUserDetailsByUsername(String userName) {
+    public ResponseUserDTO getUserDetailsByUsername(String userName) {
         User userEntity = userRepository.findByUsername(userName);
         if(userEntity == null) throw new UsernameNotFoundException(userName);
-        return modelMapper.map(userEntity, RequestUserDTO.class);
+        return modelMapper.map(userEntity, ResponseUserDTO.class);
     }
 
     @Override
