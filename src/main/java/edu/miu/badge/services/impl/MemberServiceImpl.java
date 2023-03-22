@@ -12,6 +12,7 @@ import edu.miu.badge.repositories.UserRepository;
 import edu.miu.badge.services.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -35,6 +36,10 @@ public class MemberServiceImpl implements MemberService {
     private RoleRepository roleRepository;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public ResponseMemberDTO insertNewMember(RequestMemberDTO requestMemberDTO) throws ResourceNotFoundException{
         Set<Role> role = new HashSet<>();
@@ -51,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
         Member savedMember=memberRepository.save(member);
         User newUser = new User();
         newUser.setUsername(requestMemberDTO.getUsername());
-        newUser.setPassword(requestMemberDTO.getPassword());
+        newUser.setPassword(bCryptPasswordEncoder.encode(requestMemberDTO.getPassword()));
         newUser.setMemberId(savedMember.getId());
         userRepository.save(newUser);
         return modelMapper.map(savedMember, ResponseMemberDTO.class);

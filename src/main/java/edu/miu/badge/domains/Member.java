@@ -33,6 +33,7 @@ public class Member {
 //    private List<Transaction> transactions;
     @OneToOne
     private User user;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Membership> memberships;
 }
