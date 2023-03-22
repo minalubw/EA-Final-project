@@ -14,5 +14,5 @@ public class RequestMembershipDTO {
     private int member_id;
     private int plan_id;
     private int planType_id;
-    private int numberOfAllowance;
+    private int usedAllowances;
 }

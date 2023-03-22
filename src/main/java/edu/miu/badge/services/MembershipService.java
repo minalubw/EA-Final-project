@@ -15,4 +15,5 @@ public interface MembershipService {
     public String delete(int membershipId);
     public List<ResponseMembershipDTO> getMembershipsByMemberId(int memberId, String planType);
     public List<ResponsePlanDTO> getAllPlansForMember(int id);
+
 }

@@ -1,20 +1,24 @@
 package edu.miu.badge;
 
 import edu.miu.badge.domains.PlanType;
+import edu.miu.badge.domains.Role;
 import edu.miu.badge.enumeration.PlanTypeEnum;
+import edu.miu.badge.enumeration.RoleType;
 import edu.miu.badge.repositories.PlanTypeRepository;
 import edu.miu.badge.repositories.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
+@EnableScheduling
 public class Application implements CommandLineRunner{
+
     @Autowired
     private PlanTypeRepository planTypeRepository;
     @Autowired
@@ -28,10 +32,15 @@ public class Application implements CommandLineRunner{
     public void run(String... args) throws Exception {
         System.out.println("Server is running..." );
 
+
         planTypeRepository.save(new PlanType(1, PlanTypeEnum.LIMITED));
         planTypeRepository.save(new PlanType(2, PlanTypeEnum.UNLIMITED));
         planTypeRepository.save(new PlanType(3, PlanTypeEnum.CHECKER));
 
+        roleRepository.save(new Role(1, RoleType.ADMIN, null));
+        roleRepository.save(new Role(2, RoleType.STUDENT, null));
+        roleRepository.save(new Role(3, RoleType.FACULTY, null));
+        roleRepository.save(new Role(4, RoleType.STAFF, null));
     }
     @Bean
     ModelMapper modelMapper() {
