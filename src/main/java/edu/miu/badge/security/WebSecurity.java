@@ -1,5 +1,7 @@
 package edu.miu.badge.security;
 import edu.miu.badge.services.LoginService;
+import edu.miu.badge.services.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -23,10 +25,17 @@ public class WebSecurity {
     private LoginService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public WebSecurity(Environment envi, LoginService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+
+    private MemberService memberService;
+
+    public WebSecurity(Environment envi,
+                       LoginService userService,
+                       BCryptPasswordEncoder bCryptPasswordEncoder,
+                       MemberService memberService) {
         this.envi = envi;
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.memberService = memberService;
     }
 
     @Bean
@@ -42,7 +51,7 @@ public class WebSecurity {
 
         // Create AuthenticationFilter
         AuthenticationFilter authenticationFilter =
-                new AuthenticationFilter(authenticationManager ,userService, envi);
+                new AuthenticationFilter(authenticationManager ,userService, envi, memberService);
         authenticationFilter.setFilterProcessesUrl(envi.getProperty("login.url.path"));
 
         http.csrf().disable();

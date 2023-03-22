@@ -1,9 +1,6 @@
 package edu.miu.badge.dto;
 
-import edu.miu.badge.domains.Badge;
-import edu.miu.badge.domains.Membership;
-import edu.miu.badge.domains.Role;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import java.util.List;
@@ -18,8 +15,11 @@ public class ResponseMemberDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private List<Role> roles;
-    private List<Badge> badges;
-    private List<Membership> memberships;
+    private List<RolesDTO> roles;
+    private List<ResponseBadgeDTO> badges;
 
+    @JsonBackReference
+    public List<ResponseBadgeDTO> getBadges() {
+        return badges;
+    }
 }
