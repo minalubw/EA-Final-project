@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class Member {
     private String email;
     @ManyToMany
 //    @JsonManagedReference
-    private List<Role> roles;
+    private Set<Role> roles;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
 //    @JsonManagedReference
     private List<Badge> badges;
