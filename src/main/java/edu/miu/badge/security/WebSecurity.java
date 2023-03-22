@@ -48,7 +48,7 @@ public class WebSecurity {
         http.csrf().disable();
 
         http.authorizeHttpRequests()
-                .requestMatchers( "/members")
+                .requestMatchers( "/timeslots/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

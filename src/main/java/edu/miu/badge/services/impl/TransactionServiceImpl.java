@@ -33,7 +33,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class TransactionServiceImpl implements TransactionService {
     @Value("${studentLimit}")
     private int studentMealPlanLimit;
@@ -56,12 +55,20 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws TransactionDeclinedException
     {
+        Transaction transaction = new Transaction();
+        transaction.setDate(LocalDateTime.now());
         Badge badgeOptional = badgeRepository.getBadgeByBadgeNumber(requestTransactionDTO.getBadgeId())
                 .orElseThrow(() -> {
-                    return new TransactionDeclinedException("You are not allowed to use this service!");
+                    transaction.setType(TransactionType.DENIED);
+                    transactionRepository.save(transaction);
+                    return new TransactionDeclinedException("Badge doesnt exist!");
                 });
         List<Membership> memberships = membershipRepository.findMembershipsByMemberId(badgeOptional.getMember().getId());
-
+        Member member = badgeOptional.getMember();
+        Membership ms = memberships.stream().filter(membership ->
+                Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId())).collect(Collectors.toList()).get(0);
+        transaction.setMember(member);
+        transaction.setMembership(ms);
         // Is Membership is expired or not.
         // cannot perform to check both membershipt start and end date in plan id
         //need to review
@@ -69,33 +76,43 @@ public class TransactionServiceImpl implements TransactionService {
                 .stream()
                 .anyMatch(membership -> LocalDate.now().isBefore(membership.getEndDate())
                         && LocalDate.now().isAfter(membership.getStartDate()));
-        if(!isExpiredOrMemberShipPlan)
+        if(!isExpiredOrMemberShipPlan) {
+            transaction.setType(TransactionType.DENIED);
+            transactionRepository.save(transaction);
             throw new TransactionDeclinedException("Your membership has expired. Please update before use!");
-        //check plan
+
+        }
+            //check plan
         boolean isCorrectPlan = memberships
                 .stream()
                 .map(membership -> membership.getPlan().getId())
                 .anyMatch(planId -> Objects.equals(planId,requestTransactionDTO.getPlanId()));
-        if(!isCorrectPlan)
+        if(!isCorrectPlan) {
+            transaction.setType(TransactionType.DENIED);
+            transactionRepository.save(transaction);
             throw new TransactionDeclinedException("You dont have a membership for this plan!");
 
+        }
 
 
         // Check the member is attended in the right time slot or not
         Location location = locationRepository.findById(requestTransactionDTO.getLocationId().longValue())
                 .orElseThrow(() -> {
+                    transaction.setType(TransactionType.DENIED);
+                    transactionRepository.save(transaction);
                     return new TransactionDeclinedException("Location not found!");
                 });
+        transaction.setLocation(location);
 
         boolean isCorrectTimeSlot = location.getTimeSlots().stream()
                 .anyMatch(timeSlot -> LocalTime.now().isAfter(timeSlot.getStartTime())
                         && LocalTime.now().isBefore(timeSlot.getEndTime())
                         && LocalDateTime.now().getDayOfWeek().toString().equals(timeSlot.getDay().toString()));
-
-        Member member = badgeOptional.getMember();
-        Membership ms = memberships.stream().filter(membership ->
-                Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId())).collect(Collectors.toList()).get(0);
-
+        if(!isCorrectTimeSlot){
+            transaction.setType(TransactionType.DENIED);
+            transactionRepository.save(transaction);
+            throw new TransactionDeclinedException("You cant use this service at this time period!");
+        }
         boolean isCountValid = true;
         if(ms.getPlanType().getPlanType().equals(PlanTypeEnum.LIMITED)){
             if(member.getRoles().stream().anyMatch(role -> role.getRoleType().equals(RoleType.STUDENT))){
@@ -115,17 +132,14 @@ public class TransactionServiceImpl implements TransactionService {
                     isCountValid = false;
             }
         }
-        if(!isCountValid)
+        if(!isCountValid) {
+            transaction.setType(TransactionType.DENIED);
+            transactionRepository.save(transaction);
             throw new TransactionDeclinedException("You have used all your allowance for the period!");
-
-        if (isExpiredOrMemberShipPlan && isCorrectTimeSlot && isCountValid) {
-            Transaction transaction = new Transaction();
-            transaction.setType(TransactionType.ALLOWED);
-            return modelMapper.map(transactionRepository.save(transaction), ResponseTransactionDTO.class);
-        } else {
-            throw new TransactionDeclinedException("Transaction cannot be inserted");
         }
 
+        transaction.setType(TransactionType.ALLOWED);
+        return modelMapper.map(transactionRepository.save(transaction), ResponseTransactionDTO.class);
     }
 
     @Override
