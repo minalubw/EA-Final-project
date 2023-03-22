@@ -160,11 +160,11 @@ public class TransactionServiceImpl implements TransactionService {
         return responseTransactionDTOS;
     }
 
-    @Scheduled(fixedRate = 200000)
+    @Scheduled(initialDelay=200000, fixedRate=200000)
     public void resetStudentMealCount(){
         membershipRepository.updateMembershipsMealCountByStudentRole();
     }
-    @Scheduled(fixedRate = 500000)
+    @Scheduled(initialDelay=500000, fixedRate = 500000)
     public void resetStaffMealCount(){
         membershipRepository.updateMembershipsMealCountByFacultyRole();
         membershipRepository.updateMembershipsMealCountByStaffRole();
