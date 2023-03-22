@@ -83,17 +83,19 @@ public class TransactionServiceImpl implements TransactionService {
                             && membership.getPlanType().getPlanType().toString().equals(PlanTypeEnum.LIMITED.toString())
                             && membership.getNumberOfAllowance() <= LIMITEDPLAN
                 );
+
+        Transaction transaction = new Transaction();
+        transaction.setMember(badgeOptional.getMember());
+        transaction.setMembership(memberships.stream().filter(membership -> Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId())).collect(Collectors.toList()).get(0));
+        transaction.setDate(LocalDateTime.now());
+        transaction.setLocation(location);
         if (isExpiredOrMemberShipPlan && isCorrectTimeSlot && isValid) {
-            Transaction transaction = new Transaction();
             transaction.setType(TransactionType.ALLOWED);
-            transaction.setMember(badgeOptional.getMember());
-            transaction.setMembership(memberships.stream().filter(membership -> Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId())).collect(Collectors.toList()).get(0));
-            transaction.setDate(LocalDateTime.now());
-            transaction.setLocation(location);
             return modelMapper.map(transactionRepository.save(transaction), ResponseTransactionDTO.class);
         } else {
-
-            throw new TransactionNotFoundException("Transaction cannot be inserted");
+            transaction.setType(TransactionType.DENIED);
+            modelMapper.map(transactionRepository.save(transaction), ResponseTransactionDTO.class);
+            throw new TransactionNotFoundException("Transaction decline!");
         }
 
     }
