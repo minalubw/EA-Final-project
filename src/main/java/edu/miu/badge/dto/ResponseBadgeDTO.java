@@ -19,8 +19,5 @@ public class ResponseBadgeDTO implements Serializable {
     private BadgeStatus badgeStatus;
     private int badgeNumber;
     private ResponseMemberDTO member;
-    @JsonManagedReference
-    public ResponseMemberDTO getMember() {
-        return member;
-    }
+
 }
