@@ -8,7 +8,6 @@ import edu.miu.badge.dto.RequestTransactionDTO;
 import edu.miu.badge.dto.ResponseTransactionDTO;
 import edu.miu.badge.enumeration.PlanTypeEnum;
 import edu.miu.badge.enumeration.RoleType;
-import edu.miu.badge.enumeration.TransactionDeclinedException;
 import edu.miu.badge.enumeration.TransactionType;
 import edu.miu.badge.exceptions.ResourceNotFoundException;
 import edu.miu.badge.repositories.BadgeRepository;
