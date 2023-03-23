@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
     public ResponseTransactionDTO createTransaction(RequestTransactionDTO requestTransactionDTO) throws TransactionDeclinedException {
         Transaction transaction = new Transaction();
         transaction.setDate(LocalDateTime.now());
-        Badge badgeOptional = badgeRepository.getBadgeByBadgeNumber(requestTransactionDTO.getBadgeId())
+        Badge badgeOptional = badgeRepository.getActiveBadgeByBadgeNumber(requestTransactionDTO.getBadgeId())
                 .orElseThrow(() -> {
                     transaction.setType(TransactionType.DENIED);
                     transactionRepository.save(transaction);
