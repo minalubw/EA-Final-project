@@ -54,24 +54,21 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(LocalDateTime.now());
         Badge badgeOptional = badgeRepository.getActiveBadgeByBadgeNumber(requestTransactionDTO.getBadgeId())
                 .orElseThrow(() -> {
-                    transaction.setType(TransactionType.DENIED);
-                    transactionRepository.save(transaction);
                     return new TransactionDeclinedException("Badge doesnt exist!");
                 });
         List<Membership> memberships = membershipRepository.findMembershipsByMemberId(badgeOptional.getMember().getId());
         Member member = badgeOptional.getMember();
         Membership ms = memberships.stream().filter(membership ->
-                        Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId()))
+                        Objects.equals(membership.getPlan().getId(), requestTransactionDTO.getPlanId())
+                && !membership.getPlanType().equals(PlanTypeEnum.CHECKER))
                 .findFirst().orElseThrow(() -> new TransactionDeclinedException("Membership doesnt exist!"));
         transaction.setMember(member);
         transaction.setMembership(ms);
         // Is Membership is expired or not.
-        // cannot perform to check both membershipt start and end date in plan id
-        //need to review
-        boolean isExpiredOrMemberShipPlan = memberships
-                .stream()
-                .anyMatch(membership -> LocalDate.now().isBefore(membership.getEndDate())
-                        && LocalDate.now().isAfter(membership.getStartDate()));
+        boolean isExpiredOrMemberShipPlan =
+                LocalDate.now().isBefore(ms.getEndDate())
+                        && LocalDate.now().isAfter(ms.getStartDate());
+
         if (!isExpiredOrMemberShipPlan) {
             transaction.setType(TransactionType.DENIED);
             transactionRepository.save(transaction);
